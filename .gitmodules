@@ -5,5 +5,5 @@
 	path = src/autoload-clothing
 	url = https://github.com/gesslar/autoload-clothing.git
 [submodule "src/bloodjewel_calculator"]
-	path = src/bloodjewel_calculator
-	url = git@github.com:gesslar/bloodjewel_calculator.git
+	path = src/bloodjewel-calculator
+	url = git@github.com:gesslar/bloodjewel-calculator.git
