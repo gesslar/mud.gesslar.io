@@ -14,10 +14,18 @@ jobs:
         with:
           submodules: true  # Initialize submodules
 
-      - name: Install rsync and sshpass
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add known hosts
+        run: ssh-keyscan ssh.gesslar.dev >> ~/.ssh/known_hosts
+
+      - name: Install rsync
         run: |
           sudo apt-get update
-          sudo apt-get install -y rsync sshpass
+          sudo apt-get install -y rsync
 
       - name: Update submodules
         run: git submodule update --init --recursive
@@ -26,7 +34,6 @@ jobs:
         env:
           SFTP_SERVER: ${{ secrets.SFTP_SERVER }}
           SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
-          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
           SFTP_TARGET_DIR: ${{ secrets.SFTP_TARGET_DIR }}
         run: |
-          rsync -avz --delete -e "sshpass -p $SFTP_PASSWORD ssh -o StrictHostKeyChecking=no" src/ $SFTP_USERNAME@$SFTP_SERVER:$SFTP_TARGET_DIR
+          rsync -avz --delete -e "ssh" src/ $SFTP_USERNAME@$SFTP_SERVER:$SFTP_TARGET_DIR
