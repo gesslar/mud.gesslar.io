@@ -1,106 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Converting an Existing mpackage to Muddler/GitHub/VS Code Project</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1, h2, h3 {
-            color: #333;
-        }
-        pre {
-            background-color: #f4f4f4;
-            padding: 10px;
-            border: 1px solid #ddd;
-            overflow-x: auto;
-            border-radius: 4px;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        a {
-            color: #1a73e8;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converting an Existing mpackage to Muddler/GitHub/VS Code Project</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #333;
+    }
+
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border: 1px solid #ddd;
+      overflow-x: auto;
+      border-radius: 4px;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    a {
+      color: #1a73e8;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Converting an Existing mpackage to Muddler/GitHub/VS Code Project</h1>
+  <h1>Converting an Existing mpackage to Muddler/GitHub/VS Code Project</h1>
 
-    <h2>Preface</h2>
-    <p>This guide assumes you have a fundamental understanding of the technologies involved, such as VS Code, scripting in Mudlet, and package creation in Mudlet. It is designed to provide a step-by-step approach to setting up your development, testing, building, and committing processes using GitHub, VS Code, and Mudlet, along with the tools Muddler and DeMuddler. Note that Muddler can be used with any text editor; however, this guide uses VS Code for illustration. If you prefer using VI or another editor, adapt these steps accordingly.</p>
+  <h2>Preface</h2>
+  <p>This guide assumes you have a fundamental understanding of the technologies involved, such as VS Code, scripting in
+    Mudlet, and package creation in Mudlet. It is designed to provide a step-by-step approach to setting up your
+    development, testing, building, and committing processes using GitHub, VS Code, and Mudlet, along with the tools
+    Muddler and DeMuddler. Note that Muddler can be used with any text editor; however, this guide uses VS Code for
+    illustration. If you prefer using VI or another editor, adapt these steps accordingly.</p>
 
-    <h2>Requirements</h2>
-    <ul>
-        <li><strong><a href="https://github.com/demonnic/muddler">Muddler (main repository)</a></strong>: Ensure you have both <code>muddle-shadow</code> and <code>Muddler.mpackage</code>. Download the <a href="https://github.com/demonnic/muddler/releases/latest">latest release</a>.</li>
-        <li><strong><a href="https://github.com/Edru2/DeMuddler">DeMuddler (main repository)</a></strong>: Obtain the version suitable for your operating system. Download the <a href="https://github.com/Edru2/DeMuddler/releases/latest">latest release</a>.</li>
-        <li><strong>Reading</strong>: Familiarize yourself with the following Muddler documentation:
-            <ul>
-                <li><a href="https://github.com/demonnic/muddler#usage">Usage</a></li>
-                <li><a href="https://github.com/demonnic/muddler#continuous-integration--continuous-deployment-with-muddler">Continuous Integration/Deployment with Muddler</a></li>
-            </ul>
-        </li>
-    </ul>
+  <h2>Requirements</h2>
+  <ul>
+    <li><strong><a href="https://github.com/demonnic/muddler">Muddler (main repository)</a></strong>: Ensure you have
+      both <code>muddle-shadow</code> and <code>Muddler.mpackage</code>. Download the <a
+        href="https://github.com/demonnic/muddler/releases/latest">latest release</a>.</li>
+    <li><strong><a href="https://github.com/Edru2/DeMuddler">DeMuddler (main repository)</a></strong>: Obtain the
+      version suitable for your operating system. Download the <a
+        href="https://github.com/Edru2/DeMuddler/releases/latest">latest release</a>.</li>
+    <li><strong>Reading</strong>: Familiarize yourself with the following Muddler documentation:
+      <ul>
+        <li><a href="https://github.com/demonnic/muddler#usage">Usage</a></li>
+        <li><a
+            href="https://github.com/demonnic/muddler#continuous-integration--continuous-deployment-with-muddler">Continuous
+            Integration/Deployment with Muddler</a></li>
+      </ul>
+    </li>
+  </ul>
 
-    <h2>Steps</h2>
-    <h3>Step 1: Create GitHub Project</h3>
-    <p>Set up a new project on GitHub.</p>
+  <h2>Steps</h2>
+  <h3>Step 1: Create GitHub Project</h3>
+  <p>Set up a new project on GitHub.</p>
 
-    <h3>Step 2: Clone Your GitHub Project</h3>
-    <p>Clone the repository to your local machine.</p>
+  <h3>Step 2: Clone Your GitHub Project</h3>
+  <p>Clone the repository to your local machine.</p>
 
-    <h3>Step 3: Run DeMuddler on Your .mpackage File</h3>
-    <p>Execute DeMuddler on your <code>.mpackage</code> file to extract its contents. Example command:</p>
-    <pre><code>de-muddler -f ThreshBuffs.mpackage</code></pre>
+  <h3>Step 3: Run DeMuddler on Your .mpackage File</h3>
+  <p>Execute DeMuddler on your <code>.mpackage</code> file to extract its contents. Example command:</p>
+  <pre><code>de-muddler -f ThreshBuffs.mpackage</code></pre>
 
-    <h3>Step 4: Copy De-Muddled Content to GitHub Repo</h3>
-    <p>Copy the extracted files from the de-muddled package directory to your cloned GitHub repository.</p>
+  <h3>Step 4: Copy De-Muddled Content to GitHub Repo</h3>
+  <p>Copy the extracted files from the de-muddled package directory to your cloned GitHub repository.</p>
 
-    <h3>Step 5: Open the Repo in VS Code</h3>
-    <p>Launch VS Code and open your cloned repository.</p>
+  <h3>Step 5: Open the Repo in VS Code</h3>
+  <p>Launch VS Code and open your cloned repository.</p>
 
-    <h3>Step 6: Configure Automatic .output File Creation</h3>
-    <p>Edit your <code>mfile</code> to ensure all values are set correctly, especially setting <code>outputFile</code> from <code>false</code> to <code>true</code> to enable automatic package reloading in Mudlet:</p>
-    <pre><code>outputFile = true</code></pre>
+  <h3>Step 6: Configure Automatic .output File Creation</h3>
+  <p>Edit your <code>mfile</code> to ensure all values are set correctly, especially setting <code>outputFile</code>
+    from <code>false</code> to <code>true</code> to enable automatic package reloading in Mudlet:</p>
+  <pre><code>outputFile = true</code></pre>
 
-    <h3>Step 7: Create .gitignore</h3>
-    <p>Add a <code>.gitignore</code> file to exclude build artifacts and other unnecessary files from your repository:</p>
-    <pre><code># Ignore build directory and .output file
+  <h3>Step 7: Create .gitignore</h3>
+  <p>Add a <code>.gitignore</code> file to exclude build artifacts and other unnecessary files from your repository:</p>
+  <pre><code># Ignore build directory and .output file
 build/
 .output
 
 # Ignore any file starting with "muddle" in the project root directory
 /muddle*</code></pre>
 
-    <h3>Step 8: Create a Symlink or Batch File for Muddler</h3>
-    <p>Create a symlink, batch file, or bash script to run Muddler. For VS Code users with Bash for Git, create an executable bash script named <code>muddle</code>. This script calls Muddler and uses the <code>-w</code> flag to watch and re-compile using Muddler every time there's a change in the source file. This file should be added to <code>.gitignore</code> to avoid including developer-specific configurations in the repository:</p>
-    <pre><code>#!/usr/bin/bash
+  <h3>Step 8: Create a Symlink or Batch File for Muddler</h3>
+  <p>Create a symlink, batch file, or bash script to run Muddler. For VS Code users with Bash for Git, create an
+    executable bash script named <code>muddle</code>. This script calls Muddler and uses the <code>-w</code> flag to
+    watch and re-compile using Muddler every time there's a change in the source file. This file should be added to
+    <code>.gitignore</code> to avoid including developer-specific configurations in the repository:
+  </p>
+  <pre><code>#!/usr/bin/bash
 /d/muddler/muddle-shadow-1.1.0/muddle-shadow-1.1.0/bin/muddle -w</code></pre>
 
-    <h3>Step 9: Configure Automatic Recompilation and Releases</h3>
-    <p>To enable automatic recompilation and releases upon pushing to GitHub, add a workflow configuration file (<code>release.yml</code>) under <code>.github/workflows</code>. Refer to <a href="https://gist.github.com/gesslar/ae50e2f31efdf9d350f8fb3f93f1306e">this gist</a> for an example.</a></p>
+  <h3>Step 9: Configure Automatic Recompilation and Releases</h3>
+  <p>To enable automatic recompilation and releases upon pushing to GitHub, add a workflow configuration file
+    (<code>release.yml</code>) under <code>.github/workflows</code>. Refer to <a
+      href="https://gist.github.com/gesslar/ae50e2f31efdf9d350f8fb3f93f1306e">this gist</a> for an example.</a></p>
 
-    <h3>Step 10: Add Muddler Package in Mudlet</h3>
-    <p>In Mudlet, add the <code>Muddler.mpackage</code>.</p>
+  <h3>Step 10: Add Muddler Package in Mudlet</h3>
+  <p>In Mudlet, add the <code>Muddler.mpackage</code>.</p>
 
-    <h3>Step 11: Create Standalone Script in Mudlet</h3>
-    <p>In Mudlet, create a standalone script following the Muddler package. Refer to the <a href="https://github.com/demonnic/muddler#continuous-integration--continuous-deployment-with-muddler">Continuous Integration/Deployment</a> with Muddler page or other sources for examples. My <a href="https://gist.github.com/gesslar/c8ad4e3c52ba3df592e99b5388abf029">sample script</a>.</p>
-    <p><strong>Important:</strong> This script must be located <em>after</em> the Muddler package or it will not automatically reload in Mudlet.</p>
+  <h3>Step 11: Create Standalone Script in Mudlet</h3>
+  <p>In Mudlet, create a standalone script following the Muddler package. Refer to the <a
+      href="https://github.com/demonnic/muddler#continuous-integration--continuous-deployment-with-muddler">Continuous
+      Integration/Deployment</a> with Muddler page or other sources for examples. My <a
+      href="https://gist.github.com/gesslar/c8ad4e3c52ba3df592e99b5388abf029">sample script</a>.</p>
+  <p><strong>Important:</strong> This script must be located <em>after</em> the Muddler package or it will not
+    automatically reload in Mudlet.</p>
 
-    <h3>Step 12: Run Muddler in VS Code</h3>
-    <p>Open the terminal in VS Code and run Muddler:</p>
-    <pre><code>muddle</code></pre>
-    <p>Verify everything works correctly, commit your changes to GitHub, and check if the build and deployment processes function as expected.</p>
+  <h3>Step 12: Run Muddler in VS Code</h3>
+  <p>Open the terminal in VS Code and run Muddler:</p>
+  <pre><code>muddle</code></pre>
+  <p>Verify everything works correctly, commit your changes to GitHub, and check if the build and deployment processes
+    function as expected.</p>
 
-    <h2>Conclusion</h2>
-    <p>Following these steps will help you set up an efficient development environment integrating GitHub, VS Code, and Mudlet, leveraging Muddler and DeMuddler for streamlined package management and deployment.</p>
+  <h2>Conclusion</h2>
+  <p>Following these steps will help you set up an efficient development environment integrating GitHub, VS Code, and
+    Mudlet, leveraging Muddler and DeMuddler for streamlined package management and deployment.</p>
 </body>
+
 </html>
