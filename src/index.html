@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MUD Tools and Mudlet Packages</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="module" src="./index.js"></script>
   <style>
     /* Ensure the GitHub icon link is always black */
     .github-icon-link {
@@ -47,135 +48,6 @@
     <p>This page is on GitHub <a href="https://github.com/gesslar/mud.gesslar.dev" target="_blank"
         class="github-icon-link"><i class="fab fa-github"></i> mud.gesslar.dev</a></p>
   </div>
-
-  <script>
-    /**
-     * Function to fetch dynamic repositories from GitHub based on multiple topics.
-     * @param {string} username - GitHub username.
-     * @param {Array<string>} topics - Array of topics to include in the search.
-     * @returns {Promise<Array<Object>>} - Array of repository objects.
-     */
-    async function fetchGitHubRepositories(username, topics) {
-      // Construct the query by joining multiple topics with '+' to represent AND logic
-      const topicsQuery = topics.map(topic => `topic:${encodeURIComponent(topic)}`).join('+');
-      const url = `https://api.github.com/search/repositories?q=user:${encodeURIComponent(username)}+${topicsQuery}`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        console.error(`GitHub API error: ${response.status} ${response.statusText}`);
-        return [];
-      }
-      const data = await response.json();
-      return data.items.map(repo => ({
-        name: repo.name,
-        description: repo.description || 'No description provided',
-        html_url: repo.html_url
-      }));
-    }
-
-    /**
-     * Function to get all current packages from the list.
-     * This includes both static and dynamic packages.
-     * @returns {Array<Object>} - Array of package objects.
-     */
-    function getCurrentPackages() {
-      const packageList = document.getElementById('package-list');
-      const packageItems = packageList.querySelectorAll('li');
-      const packages = [];
-
-      packageItems.forEach(item => {
-        const link = item.querySelector('a');
-        const name = link.textContent.replace('.mpackage', '');
-        const descriptionMatch = item.textContent.match(/\(([^)]+)\)/);
-        const description = descriptionMatch ? descriptionMatch[1] : 'No description provided';
-        const isStatic = item.getAttribute('data-static') === 'true';
-        const html_url = isStatic ? null : link.href;
-        packages.push({ name, description, html_url, isStatic });
-      });
-
-      return packages;
-    }
-
-    /**
-     * Function to display repositories in a specified list element.
-     * @param {Array<Object>} repositories - Array of repository objects.
-     * @param {string} listId - The ID of the <ul> element where repositories will be displayed.
-     * @param {string} linkPrefix - The prefix to be added to the repository name to form the download URL.
-     * @param {boolean} isPackage - Flag indicating if the repositories are packages (affects URL generation).
-     */
-    function displayRepositories(repositories, listId, linkPrefix, isPackage = false) {
-      // Sort repositories by name
-      repositories.sort((a, b) => a.name.localeCompare(b.name));
-
-      const list = document.getElementById(listId);
-      list.innerHTML = ''; // Clear existing list
-
-      repositories.forEach(repo => {
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        const cleanedName = repo.name.replace(/_/g, ' '); // Replace underscores with spaces
-
-        // Check if it's a package link and generate the correct URL
-        if (isPackage && repo.html_url) {
-          link.href = `${linkPrefix}${repo.name}/releases/latest/download/${repo.name}.mpackage`;
-        } else if (isPackage && !repo.html_url) {
-          // Handle static packages without a GitHub URL
-          link.href = '#'; // Or any other appropriate fallback
-        } else {
-          // For tools, link to the local HTML page
-          link.href = `${linkPrefix}${repo.name}/index.html`;
-        }
-
-        link.textContent = cleanedName;
-        listItem.appendChild(link);
-        listItem.append(` (${repo.description}) `);
-
-        // Add GitHub icon link if repository URL is available
-        if (repo.html_url) {
-          const iconLink = document.createElement('a');
-          iconLink.href = repo.html_url;
-          iconLink.target = "_blank"; // Open in a new tab
-          iconLink.className = 'github-icon-link';
-          iconLink.innerHTML = '<i class="fab fa-github"></i>';
-          listItem.appendChild(iconLink);
-        }
-
-        list.appendChild(listItem);
-      });
-    }
-
-    /**
-     * Combine static and dynamic packages/tools and display them.
-     */
-    async function loadPackages() {
-      const username = 'gesslar';
-
-      // Define topics as arrays for flexibility
-      const packageTopics = ['mudlet-package', 'thresholdrpg']; // Add more package-related topics here
-      const toolsTopics = ['mud-tools']; // Add more tools-related topics here
-
-      // Fetch dynamic packages from GitHub based on multiple topics
-      const dynamicPackages = await fetchGitHubRepositories(username, packageTopics);
-
-      // Fetch dynamic tools from GitHub based on multiple topics
-      const dynamicTools = await fetchGitHubRepositories(username, toolsTopics);
-
-      // Get current static packages
-      const staticPackages = getCurrentPackages().filter(pkg => pkg.isStatic);
-      console.log(staticPackages)
-
-      // Combine static and dynamic packages
-      const allPackages = [...staticPackages, ...dynamicPackages];
-
-      // Display packages
-      displayRepositories(allPackages, 'package-list', 'https://github.com/gesslar/', true);
-
-      // Display tools
-      displayRepositories(dynamicTools, 'tools-list', './');
-    }
-
-    // Load packages and tools on page load
-    window.addEventListener('DOMContentLoaded', loadPackages);
-  </script>
 </body>
 
 </html>

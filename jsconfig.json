@@ -1,0 +1,11 @@
+    {
+      "compilerOptions": {
+        "moduleResolution": "bundler", // or "node16" depending on your environment
+        "target": "esnext",
+        "allowJs": true,
+        "checkJs": false // Enables type checking in JavaScript files
+      },
+      "include": [
+        "src/**/*.js"
+      ]
+    }
