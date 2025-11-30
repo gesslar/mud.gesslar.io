@@ -1,6 +1,6 @@
-import * as toolkit from "https://esm.sh/@gesslar/toolkit/browser"
+import * as TK from "https://esm.sh/@gesslar/toolkit/browser"
 
-const HTML = new toolkit.HTML()
+const HTML = TK.HTML
 
 /**
  * Fetch dynamic repositories from GitHub based on multiple topics.
