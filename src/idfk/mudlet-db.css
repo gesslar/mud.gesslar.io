@@ -1,0 +1,251 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+body {
+  background: #323c4a;
+  color: #e1e1e1;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #e1e1e1;
+  border-bottom: 3px solid #3f005e;
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+h2 {
+  color: #e1e1e1;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  border-left: 4px solid #3f005e;
+}
+
+.warning-box {
+  background: #4a2c3c;
+  border-left: 5px solid #d32f2f;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 4px;
+}
+
+.warning-box h3 {
+  color: #ff6b6b;
+  margin-bottom: 0.5rem;
+}
+
+.info-box {
+  background: #2a3442;
+  border-left: 5px solid #3f005e;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+
+.info-box h3 {
+  color: #ba68c8;
+  margin-bottom: 0.5rem;
+}
+
+ul,
+ol {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+code {
+  background: #2a3442;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+  color: #ba68c8;
+}
+
+.script-container {
+  margin-top: 2rem;
+}
+
+.script-header {
+  background: #3f005e;
+  color: #e1e1e1;
+  padding: 1rem 1.5rem;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.script-header h3 {
+  margin: 0;
+}
+
+.copy-btn {
+  background: #ba68c8;
+  color: #1a1f2a;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.copy-btn:hover {
+  background: #d896ff;
+}
+
+.copy-btn:active {
+  background: #9c4eb8;
+}
+
+.script-box {
+  background: #1a1f2a;
+  border: 2px solid #3f005e;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: 1.5rem;
+  overflow-x: auto;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.script-box pre {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #e1e1e1;
+}
+
+.line-number {
+  color: #6a7489;
+  user-select: none;
+  padding-right: 1rem;
+  border-right: 1px solid #3f005e;
+  margin-right: 1rem;
+  display: inline-block;
+  text-align: right;
+  min-width: 3rem;
+}
+
+a {
+  color: #ba68c8;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #d896ff;
+  text-decoration: underline;
+}
+
+.toast {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background: #3f005e;
+  color: #e1e1e1;
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.quick-install {
+  background: linear-gradient(135deg, #3f005e 0%, #5a0080 100%);
+  border: 2px solid #ba68c8;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem auto;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(63, 0, 94, 0.4);
+}
+
+.quick-install h3 {
+  color: #e1e1e1;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.quick-install p {
+  color: #d0d0d0;
+  margin-bottom: 1.5rem;
+}
+
+.install-command {
+  background: #1a1f2a;
+  border: 1px solid #ba68c8;
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.install-command code {
+  display: block;
+  background: transparent;
+  color: #ba68c8;
+  font-size: 0.95rem;
+  padding-right: 2.5rem;
+  word-break: break-all;
+}
+
+.install-command button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  color: #ba68c8;
+  border: 1px solid #ba68c8;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.install-command button:hover {
+  background: #ba68c8;
+  color: #1a1f2a;
+}
+
+.install-command button:active {
+  background: #9c4eb8;
+}
