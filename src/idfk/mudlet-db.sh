@@ -93,7 +93,7 @@ installLuaRocks() {
 installLuaRocks && exitIfFailed
 cleanSourceDir && exitIfFailed
 
-git clone $MUDLET_GITHUB $MUDLET_SOURCE_DIR --recursive && exitIfFailed
+git clone $MUDLET_GITHUB $MUDLET_SOURCE_DIR --recursive -j$(nproc) && exitIfFailed
 
 # Mudlet uses manual comment/uncomment blocks for release vs dev builds
 # This modifies CMakeLists.txt to enable release configuration automatically
