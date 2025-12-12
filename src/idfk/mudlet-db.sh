@@ -7,6 +7,10 @@ MUDLET_NAME="Mudlet"
 DBX_CONTAINER_HOME_PREFIX=$MUDLET_HOME_PREFIX \
   distrobox create -n $MUDLET_NAME -i fedora -Y
 
+# Switch to alternate screen (like vim/less do)
+tput smcup
+tput cup 0 0
+
 distrobox enter $MUDLET_NAME -- bash <<'SETUP_SCRIPT'
 set -uo pipefail
 
@@ -133,6 +137,9 @@ echo
 distrobox-export -a mudlet
 
 SETUP_SCRIPT
+
+# Switch back to normal screen (spam disappears!)
+tput rmcup
 
 DB_MUDLET_PATH="$MUDLET_HOME_PREFIX/$MUDLET_NAME"
 
