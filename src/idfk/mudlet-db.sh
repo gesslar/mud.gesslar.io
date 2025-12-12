@@ -138,17 +138,15 @@ DB_MUDLET_PATH="$MUDLET_HOME_PREFIX/$MUDLET_NAME"
 
 echo
 echo "Mudlet has been installed to: $DB_MUDLET_PATH"
-echo "  To enter the distrobox: distrobox enter $MUDLET_NAME"
+echo "  To enter: distrobox enter $MUDLET_NAME"
 echo "  To remove: distrobox rm $MUDLET_NAME"
 
 if [[ -d "$HOME/.config/mudlet" ]]; then
   echo
   echo "You have an existing configuration for Mudlet in"
-  echo
   echo "  $HOME/.config/mudlet"
   echo
   echo "To use it, you can:"
-  echo
   echo "  rm $DB_MUDLET_PATH/mudlet-data"
   echo "  ln -s $HOME/.config/mudlet $DB_MUDLET_PATH/mudlet-data"
   echo
