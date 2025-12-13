@@ -3,15 +3,17 @@ async function loadScript() {
   try {
     const response = await fetch('idfk/mudlet-db.sh');
     const text = await response.text();
-    const lines = text.split('\n');
+
+    // Highlight the code
+    const highlighted = window.hljs.highlight(text, { language: 'bash' }).value;
+
+    // Split into lines and add line numbers
+    const lines = highlighted.split('\n');
     const numberedLines = lines.map((line, index) => {
       const lineNum = String(index + 1).padStart(3, ' ');
-      const escapedLine = line
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-      return `<span class="line-number">${lineNum}</span>${escapedLine}`;
+      return `<span class="line-number">${lineNum}</span>${line}`;
     }).join('\n');
+
     document.getElementById('script-content').innerHTML = numberedLines;
   } catch (error) {
     document.getElementById('script-content').textContent = 'Error loading script: ' + error.message;
@@ -51,6 +53,20 @@ async function copyCurlCommand() {
   } catch (error) {
     console.error('Failed to copy command:', error);
     alert('Failed to copy command to clipboard');
+  }
+}
+
+// Toggle script visibility
+function toggleScript() {
+  const wrapper = document.getElementById('script-content-wrapper');
+  const button = document.querySelector('.toggle-script');
+
+  wrapper.classList.toggle('show');
+
+  if (wrapper.classList.contains('show')) {
+    button.textContent = 'Hide Script';
+  } else {
+    button.textContent = 'Show Script';
   }
 }
 
