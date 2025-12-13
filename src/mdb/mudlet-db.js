@@ -1,7 +1,7 @@
 // Fetch and display the script
 async function loadScript() {
   try {
-    const response = await fetch("mudlet-db.sh")
+    const response = await fetch("mdb.sh")
     const text = await response.text()
 
     // Highlight the code
@@ -24,7 +24,7 @@ async function loadScript() {
 // Copy script to clipboard
 async function copyScript() {
   try {
-    const response = await fetch("mudlet-db.sh")
+    const response = await fetch("mdb.sh")
     const text = await response.text()
     await navigator.clipboard.writeText(text)
     showToast()
@@ -45,7 +45,7 @@ function showToast() {
 
 // Copy curl command to clipboard
 async function copyCurlCommand() {
-  const command = "bash <(curl -fsSL https://mud.gesslar.dev/md/mudlet-db.sh)"
+  const command = "bash <(curl -fsSL https://mud.gesslar.dev/mdb/mdb.sh)"
   try {
     await navigator.clipboard.writeText(command)
     const toast = document.getElementById("toast")
