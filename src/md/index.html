@@ -7,9 +7,11 @@
   <title>Mudlet Distrobox Installation Script</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;400&family=Victor+Mono:wght@800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="idfk/mudlet-db.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;400&family=Victor+Mono:wght@800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="mudlet-db.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
 </head>
 
 <body>
@@ -22,7 +24,7 @@
       <div class="install-command" role="group" aria-labelledby="install-command-label">
         <span id="install-command-label" class="visually-hidden">Installation command</span>
         <code id="curl-command"
-          aria-label="Installation command">bash &lt;(curl -fsSL https://mud.gesslar.dev/idfk/mudlet-db.sh)</code>
+          aria-label="Installation command">bash &lt;(curl -fsSL https://mud.gesslar.dev/md/mudlet-db.sh)</code>
         <button onclick="copyCurlCommand()" aria-label="Copy installation command to clipboard">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             aria-hidden="true">
@@ -31,6 +33,10 @@
           </svg>
         </button>
       </div>
+      <p class="warning-note" role="note">
+        <span class="warning-icon" aria-hidden="true">!</span>
+        <span><strong>Heads up:</strong> This installs from the current GitHub source; releases may behave differently.</span>
+      </p>
     </section>
 
     <section class="video-container" aria-labelledby="video-heading">
@@ -108,7 +114,8 @@
     <section aria-labelledby="script-details-heading">
       <h2 id="script-details-heading">
         <span>Script Details</span>
-        <button class="toggle-script" onclick="toggleScript()" aria-label="Toggle script visibility">Show Script</button>
+        <button class="toggle-script" onclick="toggleScript()" aria-label="Toggle script visibility">Show
+          Script</button>
       </h2>
       <ul>
         <li><strong>Container Home:</strong> <code>$HOME/distroboxes/Mudlet</code></li>
@@ -141,7 +148,7 @@
     hljs.registerLanguage('bash', bash);
     window.hljs = hljs;
   </script>
-  <script src="idfk/mudlet-db.js"></script>
+  <script src="mudlet-db.js"></script>
 </body>
 
 </html>
