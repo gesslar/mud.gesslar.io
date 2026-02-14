@@ -78,16 +78,7 @@ function displayRepositories(
     const link = document.createElement("a")
     const cleanedName = repo.name.replace(/_/g, " ")
 
-    if(isPackage && repo.html_url) {
-      link.href = `${linkPrefix}${repo.name}/releases/latest/download/${repo.name}.mpackage`
-    } else if(isPackage && !repo.html_url) {
-      link.href = "#"
-    } else {
-      if(Data.typeOf(linkPrefix, "Function"))
-        link.href = linkPrefix(repo.name)
-      else
-        link.href = `${linkPrefix}${repo.name}/index.html`
-    }
+    link.href = linkPrefix(repo)
 
     link.textContent = cleanedName
     listItem.appendChild(link)
@@ -143,8 +134,8 @@ async function loadPackages() {
   const packageList = document.querySelector("#package-list")
   const toolsList = document.querySelector("#tools-list")
 
-  displayRepositories(allPackages, packageList , p => `https://github.com/gesslar/${p}/releases/latest/download/${p}.mpackage`, true)
-  displayRepositories(dynamicTools, toolsList, p => `https://${p}/`)
+  displayRepositories(allPackages, packageList , p => `https://github.com/gesslar/${p.name}/releases/latest/download/${p.name}.mpackage`, true)
+  displayRepositories(dynamicTools, toolsList, p => `https://${p.name}/`)
 }
 
 /**
