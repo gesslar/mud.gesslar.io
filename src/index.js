@@ -1,6 +1,6 @@
 import * as TK from "https://esm.sh/@gesslar/toolkit@3.34.0"
 
-const {HTML, Notify} = TK
+const {Data, HTML, Notify} = TK
 
 /**
  * Fetch dynamic repositories from GitHub based on multiple topics.
@@ -61,7 +61,7 @@ function getCurrentPackages() {
  *
  * @param {Array<object>} repositories - Array of repository objects.
  * @param {HTMLUListElement} list - The HTMLUListElement to populate.
- * @param {string} linkPrefix - The prefix to be added to the repository name to form the download URL.
+ * @param {string | function} linkPrefix - The prefix to be added to the repository name to form the download URL.
  * @param {boolean} isPackage - Flag indicating if the repositories are packages (affects URL generation).
  */
 function displayRepositories(
@@ -78,12 +78,16 @@ function displayRepositories(
     const link = document.createElement("a")
     const cleanedName = repo.name.replace(/_/g, " ")
 
-    if(isPackage && repo.html_url)
+    if(isPackage && repo.html_url) {
       link.href = `${linkPrefix}${repo.name}/releases/latest/download/${repo.name}.mpackage`
-    else if(isPackage && !repo.html_url)
+    } else if(isPackage && !repo.html_url) {
       link.href = "#"
-    else
-      link.href = `${linkPrefix}${repo.name}/index.html`
+    } else {
+      if(Data.typeOf(linkPrefix, "Function"))
+        link.href = linkPrefix(repo.name)
+      else
+        link.href = `${linkPrefix}${repo.name}/index.html`
+    }
 
     link.textContent = cleanedName
     listItem.appendChild(link)
@@ -140,7 +144,7 @@ async function loadPackages() {
   const toolsList = document.querySelector("#tools-list")
 
   displayRepositories(allPackages, packageList , "https://github.com/gesslar/", true)
-  displayRepositories(dynamicTools, toolsList, "./")
+  displayRepositories(dynamicTools, toolsList, tool => `https://${tool}.gesslar.io/`)
 }
 
 /**
