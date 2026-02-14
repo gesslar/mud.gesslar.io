@@ -61,7 +61,7 @@ function getCurrentPackages() {
  *
  * @param {Array<object>} repositories - Array of repository objects.
  * @param {HTMLUListElement} list - The HTMLUListElement to populate.
- * @param {string | function} linkPrefix - The prefix to be added to the repository name to form the download URL.
+ * @param {string | () => string} linkPrefix - The prefix to be added to the repository name to form the download URL.
  * @param {boolean} isPackage - Flag indicating if the repositories are packages (affects URL generation).
  */
 function displayRepositories(
