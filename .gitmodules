@@ -1,9 +1,0 @@
-[submodule "src/mudpad"]
-	path = src/mudpad
-	url = https://github.com/gesslar/mudpad.git
-[submodule "src/autoload-clothing"]
-	path = src/autoload-clothing
-	url = https://github.com/gesslar/autoload-clothing.git
-[submodule "src/bloodjewel-calculator"]
-	path = src/bloodjewel-calculator
-	url = git@github.com:gesslar/bloodjewel-calculator.git
