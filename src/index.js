@@ -1,6 +1,6 @@
-import * as TK from "https://esm.sh/@gesslar/toolkit/browser"
+import * as TK from "https://esm.sh/@gesslar/toolkit@3.34.0"
 
-const HTML = TK.HTML
+const {HTML, Notify} = TK
 
 /**
  * Fetch dynamic repositories from GitHub based on multiple topics.
@@ -89,14 +89,30 @@ function displayRepositories(
     listItem.appendChild(link)
     listItem.append(` (${repo.description}) `)
 
+    if(isPackage && repo.html_url) {
+      const packageIcon = document.createElement("span")
+      packageIcon.classList.add("icon")
+      packageIcon.classList.add("icon-link")
+      packageIcon.classList.add("material-symbols-outlined")
+      packageIcon.textContent = "package_2"
+      packageIcon.dataset.packageLink = link.href
+
+      Notify.on("click", clickPackage, packageIcon)
+
+      const packageLink = document.createElement("span")
+      packageLink.append(packageIcon)
+      listItem.append(packageLink)
+    }
+
     if(repo.html_url) {
+      const githubIcon = document.createElement("img")
+      githubIcon.setAttribute("src", "img/line-md--github-loop.svg")
+      githubIcon.classList.add("icon")
+
       const iconLink = document.createElement("a")
       iconLink.href = repo.html_url
       iconLink.target = "_blank"
       iconLink.className = "github-icon-link"
-
-      const githubIcon = document.createElement("i")
-      githubIcon.classList.add("fab", "fa-github")
 
       iconLink.appendChild(githubIcon)
       listItem.appendChild(iconLink)
@@ -127,4 +143,20 @@ async function loadPackages() {
   displayRepositories(dynamicTools, toolsList, "./")
 }
 
-window.addEventListener("DOMContentLoaded", loadPackages)
+/**
+ * Click handler for the package span item thing.
+ *
+ * @param {Event} evt - The event of click
+ */
+async function clickPackage(evt) {
+  const element = evt.currentTarget
+  const link = element.dataset.packageLink
+  const install = `lua installPackage("${link}")`
+  await navigator.clipboard.writeText(install)
+  element.classList.toggle("clicked")
+  Notify.on("transitionend", evt => {
+    evt.currentTarget.classList.toggle("clicked")
+  }, element, {once: true})
+}
+
+Notify.on("DOMContentLoaded", loadPackages)

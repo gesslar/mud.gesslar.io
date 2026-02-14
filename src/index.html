@@ -6,26 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MUD Tools and Mudlet Packages</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script type="module" src="./index.js"></script>
-  <style>
-    /* Ensure the GitHub icon link is always black */
-    .github-icon-link {
-      color: black;
-    }
-
-    .github-icon-link:hover {
-      color: black;
-    }
-
-    /* Style for the static line at the bottom */
-    .footer {
-      margin-top: 20px;
-      padding-top: 10px;
-      border-top: 1px solid #ccc;
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=package_2" />
+  <script type="module" src="./index.js" defer></script>
 </head>
 
 <body>
@@ -37,21 +21,30 @@
   </div>
   <div>
     <h1>
-      Mudlet
+      Mudlet Packages
     </h1>
-    <p><a href="./mdb">Build and install</a> a native Linux binary using distrobox.</p>
-    <h1>Mudlet Packages</h1>
-    <p>To install these packages in Mudlet, simply drag and drop the links onto Mudlet. Ensure you're at least at Mudlet
-      v4.13.1</p>
-    <p>Click on the GitHub <i class="fab fa-github"></i> link to visit the repository. There might be help there. Or
-      not. It depends.</p>
+    <h2>
+      Installation
+    </h2>
+    <ol>
+      <li>Click the <span class="material-symbols-outlined icon icon-link">
+          package_2
+        </span> package icon to copy the installation script.</span>
+      </li>
+      <li>Paste what you have copied into Mudlet's command line.</li>
+      <li>Hit enter.</li>
+      <li>Do the macarena.</li>
+      <li>Heeeey, macarena.</li>
+    </ol>
+    <p>Click on the GitHub <img src="img/line-md--github-loop.svg" class="icon" alt=""> icon to visit the repository.
+      There might be help there. Or not. It depends.</p>
     <ul id="package-list">
     </ul>
   </div>
-  <div class="footer">
-    <p>This page is on GitHub <a href="https://github.com/gesslar/mud.gesslar.dev" target="_blank"
-        class="github-icon-link"><i class="fab fa-github"></i> mud.gesslar.dev</a></p>
-  </div>
+  <footer>
+    This page is on GitHub
+    <a href="https://github.com/gesslar/mud.gesslar.dev" target="_blank">mud.gesslar.dev</a>
+  </footer>
 </body>
 
 </html>

@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/gesslar/mud.gesslar.dev#readme",
   "devDependencies": {
-    "@gesslar/toolkit": "^1.0.4",
-    "@gesslar/uglier": "^0.0.5",
+    "@gesslar/toolkit": "^2.8.0",
+    "@gesslar/uglier": "^0.0.8",
     "@stylistic/eslint-plugin": "^5.6.1",
-    "eslint": "^9.39.1",
-    "eslint-plugin-jsdoc": "^61.4.1",
+    "eslint": "^9.39.2",
+    "eslint-plugin-jsdoc": "^61.5.0",
     "globals": "^16.5.0"
   },
   "dependencies": {
