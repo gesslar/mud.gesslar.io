@@ -1,6 +1,6 @@
 import * as TK from "https://esm.sh/@gesslar/toolkit@3.34.0"
 
-const {Data, HTML, Notify} = TK
+const {HTML, Notify} = TK
 
 /**
  * Fetch dynamic repositories from GitHub based on multiple topics.
