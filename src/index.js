@@ -143,8 +143,8 @@ async function loadPackages() {
   const packageList = document.querySelector("#package-list")
   const toolsList = document.querySelector("#tools-list")
 
-  displayRepositories(allPackages, packageList , "https://github.com/gesslar/", true)
-  displayRepositories(dynamicTools, toolsList, tool => `https://${tool}/`)
+  displayRepositories(allPackages, packageList , p => `https://github.com/gesslar/${p}/releases/latest/download/${p}.mpackage`, true)
+  displayRepositories(dynamicTools, toolsList, p => `https://${p}/`)
 }
 
 /**
