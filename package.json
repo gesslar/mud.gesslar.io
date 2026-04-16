@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src/index.js",
-    "lint:fix": "eslint src/index.js --fix",
-    "update": "git submodule update --remote",
-    "reset": "git submodule update --init --recursive"
+    "lint:fix": "eslint src/index.js --fix"
   },
   "repository": {
     "type": "git",
