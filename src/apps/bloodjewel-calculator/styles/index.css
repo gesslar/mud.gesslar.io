@@ -1,3 +1,4 @@
+@scope (section[data-app="bloodjewel-calculator"]) {
 div#content {
   display: flex;
   flex-direction: column;
@@ -326,4 +327,5 @@ div#content.with-output ~ mud-history {
   div#content.with-output ~ mud-history {
     width: 92vw;
   }
+}
 }

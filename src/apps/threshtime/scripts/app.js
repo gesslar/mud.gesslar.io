@@ -11,22 +11,29 @@ const formatOptions = {
 }
 
 export default class {
-  #disposer = new DisposerClass()
+  #root
+  #disposer
   #els = {}
 
-  boot() {
-    const root = document.querySelector("#content")
+  constructor(root) {
+    this.#root = root
+  }
+
+  activate() {
+    this.#disposer = new DisposerClass()
+
+    const content = this.#root.querySelector("#content")
 
     this.#els = {
-      date: root.querySelector("#rldateinput"),
-      time: root.querySelector("#rltimeinput"),
-      convert: root.querySelector("#convert"),
-      etOutput: root.querySelector("#etdatetimeoutput"),
-      icOutput: root.querySelector("#icdatetimeoutput"),
-      icMoreInfo: root.querySelector("#icmoreinfo"),
-      copyEt: root.querySelector("#copyet"),
-      copyIc: root.querySelector("#copyic"),
-      history: document.querySelector("mud-history"),
+      date: content.querySelector("#rldateinput"),
+      time: content.querySelector("#rltimeinput"),
+      convert: content.querySelector("#convert"),
+      etOutput: content.querySelector("#etdatetimeoutput"),
+      icOutput: content.querySelector("#icdatetimeoutput"),
+      icMoreInfo: content.querySelector("#icmoreinfo"),
+      copyEt: content.querySelector("#copyet"),
+      copyIc: content.querySelector("#copyic"),
+      history: this.#root.querySelector("mud-history"),
     }
 
     this.#disposer.register(
@@ -66,8 +73,10 @@ export default class {
     this.#updateTimes()
   }
 
-  dispose() {
-    this.#disposer.dispose()
+  deactivate() {
+    this.#disposer?.dispose()
+    this.#disposer = null
+    this.#els = {}
   }
 
   #setCurrentDateTime() {

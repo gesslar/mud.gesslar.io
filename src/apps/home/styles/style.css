@@ -1,3 +1,4 @@
+@scope (section[data-app="home"]) {
 div#content {
   width: clamp(50vw, 80vw, 1100px);
   max-width: 1100px;
@@ -118,4 +119,5 @@ div#content {
     transform: rotate(45deg);
   }
 
+}
 }

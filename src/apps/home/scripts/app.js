@@ -5,18 +5,25 @@ const USERNAME = "gesslar"
 const PACKAGE_TOPICS = ["mudlet-package", "thresholdrpg"]
 
 export default class {
-  #disposer = new DisposerClass()
+  #root
+  #disposer
 
-  async boot() {
+  constructor(root) {
+    this.#root = root
+  }
+
+  async activate() {
+    this.#disposer = new DisposerClass()
     await this.#loadPackages()
   }
 
-  dispose() {
-    this.#disposer.dispose()
+  deactivate() {
+    this.#disposer?.dispose()
+    this.#disposer = null
   }
 
   async #loadPackages() {
-    const list = document.querySelector("#package-list")
+    const list = this.#root.querySelector("#package-list")
 
     const dynamicPackages = await fetchGitHubRepositories(USERNAME, PACKAGE_TOPICS)
     const staticPackages = readStaticPackages(list)

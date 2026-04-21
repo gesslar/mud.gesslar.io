@@ -1,114 +1,185 @@
 // index.js
+//
+// The shell pre-builds every app into its own hidden <section> under <main>
+// at boot: CSS, HTML template, module, and app.activate() all run once so
+// every app is fully populated and wired before the user touches anything.
+// Navigating = deactivate outgoing, reset its section from template, hide it,
+// show the target (already built + wired), then re-activate the outgoing in
+// the background so it's fresh for the next visit.
 
-import {findApp} from "./apps.js"
+import {apps, findApp} from "./apps.js"
 import {setupNavigation, setActiveNav} from "./nav.js"
-import {disposer} from "./tk.js"
 import "./mud-select.js"
 import "./history.js"
 
-function navigate(path) {
-  history.pushState({}, "", path)
-  render(path)
+const appTemplates = new Map()
+const appSections = new Map()
+const appInstances = new Map()
+
+let currentSlug = null
+
+function slugOf(appDef) {
+  return appDef.folder || appDef.slug || "home"
 }
 
-let currentApp
+function resolveHref(entry, folder) {
+  return /^https?:\/\//.test(entry) ? entry : `/apps/${folder}/${entry}`
+}
 
-async function render(path) {
-  try {
-    currentApp?.dispose?.()
-    currentApp = null
-    disposer.dispose()
-    window.dispatchEvent(new CustomEvent("leaving"))
-  } catch(e) {
-    console.warn(e)
-  }
-
-  const appDefinition = findApp(path) ?? {}
-  const {name, slug, folder: appFolder, scripts = [], styles = []} = appDefinition
-  const folder = appFolder || slug || "home"
-
-  setActiveNav(path)
-
-  const response = await fetch(`/apps/${folder}/index.html`)
-
-  if(!response.ok) {
-    console.warn(`No app at /apps/${folder}/index.html (${response.status})`)
-
-    return
-  }
-
-  const content = await response.text()
-  const parsed = new DOMParser().parseFromString(content, "text/html")
-  document.querySelector("main").replaceChildren(...parsed.body.children)
-
-  // inject/replace scripts
-  const existingScripts = document.querySelectorAll("script")
-  existingScripts.forEach(e => {
-    if(!e.hasAttribute("base"))
-      e.parentElement.removeChild(e)
+function loadStylesheet(href) {
+  return new Promise(resolve => {
+    const link = document.createElement("link")
+    link.rel = "stylesheet"
+    link.href = href
+    link.addEventListener("load", () => resolve(link), {once: true})
+    link.addEventListener("error", () => resolve(link), {once: true})
+    document.head.appendChild(link)
   })
+}
+
+function populateSection(section, template) {
+  const clone = template.cloneNode(true)
+  section.replaceChildren(...Array.from(clone.children))
+}
+
+function activateInBackground(slug) {
+  const app = appInstances.get(slug)
+
+  if(!app?.activate)
+    return
+
+  Promise.resolve().then(() => app.activate()).catch(e =>
+    console.warn(`Activate failed for ${slug}:`, e)
+  )
+}
+
+async function prepareApp(appDef) {
+  const slug = slugOf(appDef)
+  const {scripts = [], styles = []} = appDef
+
+  const section = document.createElement("section")
+  section.dataset.app = slug
+  section.hidden = true
+  document.querySelector("main").appendChild(section)
+
+  appSections.set(slug, section)
+
+  await Promise.all(styles.map(e => loadStylesheet(resolveHref(e, slug))))
 
   scripts.forEach(e => {
     const element = document.createElement("script")
     element.type = "module"
-    element.src = e
-
-    if(e.match(/^https?:\/\//))
-      element.src = e
-    else
-      element.src = `/apps/${folder}/${e}`
-
+    element.src = resolveHref(e, slug)
     document.head.appendChild(element)
   })
 
-  // inject/replace styles
-  const existingStyles = document.querySelectorAll("link")
-  existingStyles.forEach(e => {
-    if(!e.hasAttribute("base"))
-      e.parentElement.removeChild(e)
-  })
+  const [response, mod] = await Promise.all([
+    fetch(`/apps/${slug}/index.html`),
+    import(`/apps/${slug}/scripts/app.js`).catch(e => {
+      console.warn(`No app module for ${slug}:`, e)
 
-  styles.forEach(e => {
-    const element = document.createElement("link")
-    element.rel = "stylesheet"
+      return null
+    }),
+  ])
 
-    if(e.match(/^https?:\/\//))
-      element.href = e
-    else
-      element.href = `/apps/${folder}/${e}`
+  if(!response.ok) {
+    console.warn(`Missing HTML for ${slug}: ${response.status}`)
 
-    document.head.appendChild(element)
-  })
+    return
+  }
 
-  document.title = `MUDtools - ${name}`
+  const html = await response.text()
+  const parsed = new DOMParser().parseFromString(html, "text/html")
+  appTemplates.set(slug, parsed.body)
 
-  // Now load the app class if available
-  try {
-    const appJs = await import(`/apps/${folder}/scripts/app.js`)
-    if(appJs.default) {
-      currentApp = new appJs.default()
-      currentApp.boot()
+  populateSection(section, parsed.body)
+
+  if(mod?.default) {
+    const instance = new mod.default(section)
+    appInstances.set(slug, instance)
+
+    try {
+      await instance.activate?.()
+    } catch(e) {
+      console.warn(`Initial activate failed for ${slug}:`, e)
     }
-  } catch(e) {
-    console.warn(e)
   }
 }
 
-// Back/forward
+async function render(path) {
+  const appDef = findApp(path)
+
+  if(!appDef) {
+    console.warn(`No app for path ${path}`)
+
+    return
+  }
+
+  const slug = slugOf(appDef)
+
+  if(slug === currentSlug)
+    return
+
+  const nextSection = appSections.get(slug)
+
+  if(!nextSection)
+    return
+
+  const swap = () => {
+    const currentSection = currentSlug ? appSections.get(currentSlug) : null
+    const currentApp = currentSlug ? appInstances.get(currentSlug) : null
+    const currentTemplate = currentSlug ? appTemplates.get(currentSlug) : null
+    const leavingSlug = currentSlug
+
+    try {
+      currentApp?.deactivate?.()
+    } catch(e) {
+      console.warn(`Deactivate failed for ${currentSlug}:`, e)
+    }
+
+    if(currentSection) {
+      if(currentTemplate)
+        populateSection(currentSection, currentTemplate)
+
+      currentSection.hidden = true
+    }
+
+    nextSection.hidden = false
+    setActiveNav(path)
+    document.title = `MUDtools - ${appDef.name}`
+    currentSlug = slug
+
+    if(leavingSlug)
+      activateInBackground(leavingSlug)
+  }
+
+  if(document.startViewTransition)
+    await document.startViewTransition(swap).finished
+  else
+    swap()
+}
+
+function navigate(path) {
+  if(path === location.pathname && currentSlug)
+    return
+
+  history.pushState({}, "", path)
+  render(path)
+}
+
 window.addEventListener("popstate", () => render(location.pathname))
 
-// Intercept link clicks
 document.addEventListener("click", e => {
   const a = e.target.closest("a[href]")
+
   if(a && a.origin === location.origin) {
     e.preventDefault()
     navigate(a.pathname)
   }
 })
 
-// Boot
-document.addEventListener("DOMContentLoaded", () => {
-  window.addEventListener("arrived", () => window.dispatchEvent(new CustomEvent("boot")))
+document.addEventListener("DOMContentLoaded", async () => {
   setupNavigation()
+  await Promise.all(apps.map(prepareApp))
   render(location.pathname)
 })

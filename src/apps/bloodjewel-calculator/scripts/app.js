@@ -3,19 +3,32 @@ import gems from "./gems.js"
 import Calc from "./calc.js"
 
 export default class {
-  #disposer = new DisposerClass()
-  #gemDisposer = new DisposerClass()
-  #dialogDisposer = new DisposerClass()
-  #calc = new Calc()
+  #root
+  #disposer
+  #gemDisposer
+  #dialogDisposer
+  #calc
   #maxGems = 12
   #activeDialog = null
   #lastTrigger = null
 
-  boot() {
-    const showPasteStageButton = document.querySelector("#showPasteStage")
-    const showSaveStageButton = document.querySelector("#showSaveStage")
-    const resetGemsButton = document.querySelector("#resetGems")
-    const history = document.querySelector("mud-history")
+  constructor(root) {
+    this.#root = root
+  }
+
+  activate() {
+    this.#disposer = new DisposerClass()
+    this.#gemDisposer = new DisposerClass()
+    this.#dialogDisposer = new DisposerClass()
+    this.#calc = new Calc(this.#root)
+    this.#maxGems = 12
+    this.#activeDialog = null
+    this.#lastTrigger = null
+
+    const showPasteStageButton = this.#root.querySelector("#showPasteStage")
+    const showSaveStageButton = this.#root.querySelector("#showSaveStage")
+    const resetGemsButton = this.#root.querySelector("#resetGems")
+    const history = this.#root.querySelector("mud-history")
 
     this.#disposer.register(
       notify.on("click", evt => this.#showPasteStage(evt), showPasteStageButton),
@@ -30,8 +43,14 @@ export default class {
     this.#createTable()
   }
 
-  dispose() {
-    this.#disposer.dispose()
+  deactivate() {
+    this.#disposer?.dispose()
+    this.#disposer = null
+    this.#gemDisposer = null
+    this.#dialogDisposer = null
+    this.#calc = null
+    this.#activeDialog = null
+    this.#lastTrigger = null
   }
 
   #showPasteStage() {
@@ -40,7 +59,7 @@ export default class {
 
     this.#lastTrigger = document.activeElement
 
-    const template = document.querySelector("#pasteDialogTemplate")
+    const template = this.#root.querySelector("#pasteDialogTemplate")
     const fragment = template.content.cloneNode(true)
     const pasteDialog = fragment.querySelector("#pasteDialog")
     const pasteBox = fragment.querySelector("#pasteBox")
@@ -73,6 +92,7 @@ export default class {
     }
 
     this.#dialogDisposer.dispose()
+    this.#dialogDisposer = new DisposerClass()
 
     this.#dialogDisposer.register(
       notify.on("click", () => this.#paste(pasteDialog, pasteBox), pasteButton),
@@ -85,7 +105,7 @@ export default class {
       notify.on("keydown", handleTrap, pasteDialog),
     )
 
-    document.body.appendChild(pasteDialog)
+    this.#root.appendChild(pasteDialog)
     this.#activeDialog = pasteDialog
 
     pasteDialog.showModal()
@@ -109,6 +129,7 @@ export default class {
 
   #cleanupDialog(pasteDialog) {
     this.#dialogDisposer.dispose()
+    this.#dialogDisposer = new DisposerClass()
     pasteDialog.remove()
     this.#activeDialog = null
     if(this.#lastTrigger instanceof HTMLElement)
@@ -133,7 +154,7 @@ export default class {
       this.#createTable()
     }
 
-    const selects = document.querySelectorAll("mud-select")
+    const selects = this.#root.querySelectorAll("mud-select")
 
     selects.forEach(el => el.value = "none")
 
@@ -161,7 +182,7 @@ export default class {
     const qualityOptions = qualities.map(e => ({text: capitalize(e), value: e}))
     const typeOptions = types.map(e => ({text: capitalize(e), value: e}))
 
-    const template = document.querySelector("#gemTemplate")
+    const template = this.#root.querySelector("#gemTemplate")
     const root = template.content.cloneNode(true)
     const gemContainer = root.querySelector("div")
     gemContainer.id = `bloodjewel-select-${num}`
@@ -193,9 +214,10 @@ export default class {
   }
 
   #createTable() {
-    const stage = document.querySelector("#gemStage")
+    const stage = this.#root.querySelector("#gemStage")
 
     this.#gemDisposer.dispose()
+    this.#gemDisposer = new DisposerClass()
 
     html.clearHTMLContent(stage)
 
@@ -209,7 +231,7 @@ export default class {
 
     this.#lastTrigger = document.activeElement
 
-    const template = document.querySelector("#saveDialogTemplate")
+    const template = this.#root.querySelector("#saveDialogTemplate")
     const fragment = template.content.cloneNode(true)
     const saveDialog = fragment.querySelector("#saveDialog")
     const titleInput = fragment.querySelector("#saveTitle")
@@ -252,6 +274,7 @@ export default class {
     }
 
     this.#dialogDisposer.dispose()
+    this.#dialogDisposer = new DisposerClass()
 
     this.#dialogDisposer.register(
       notify.on("click", submit, saveButton),
@@ -270,7 +293,7 @@ export default class {
       notify.on("keydown", handleTrap, saveDialog),
     )
 
-    document.body.appendChild(saveDialog)
+    this.#root.appendChild(saveDialog)
     this.#activeDialog = saveDialog
 
     saveDialog.showModal()
@@ -293,7 +316,7 @@ export default class {
   }
 
   #saveSnapshot(title) {
-    const selects = document.querySelectorAll("mud-select")
+    const selects = this.#root.querySelectorAll("mud-select")
     const numPairs = selects.length / 2
     const gems = []
 
@@ -308,7 +331,7 @@ export default class {
     if(gems.length === 0)
       return
 
-    const history = document.querySelector("mud-history")
+    const history = this.#root.querySelector("mud-history")
 
     history.save({
       summary: title,
@@ -322,7 +345,7 @@ export default class {
       this.#createTable()
     }
 
-    const selects = document.querySelectorAll("mud-select")
+    const selects = this.#root.querySelectorAll("mud-select")
 
     selects.forEach(el => el.value = "none")
 

@@ -1,3 +1,4 @@
+@scope (section[data-app="threshtime"]) {
 div#content {
   display: flex;
   flex-direction: column;
@@ -187,4 +188,5 @@ mud-history {
   mud-history {
     width: 92vw;
   }
+}
 }

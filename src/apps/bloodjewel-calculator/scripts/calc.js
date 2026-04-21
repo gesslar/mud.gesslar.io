@@ -2,16 +2,21 @@ import {Time} from "/js/tk.js"
 import gems from "./gems.js"
 
 export default class Calc {
+  #root
   #selectedGems = []
   #effects = {}
   #pending = null
 
+  constructor(root) {
+    this.#root = root
+  }
+
   get output() {
-    return document.querySelector("#outputStage")
+    return this.#root.querySelector("#outputStage")
   }
 
   get selects() {
-    return document.querySelectorAll("mud-select")
+    return this.#root.querySelectorAll("mud-select")
   }
 
   gemUpdated() {
@@ -42,7 +47,7 @@ export default class Calc {
   }
 
   buildSelectedGems() {
-    const selects = document.querySelectorAll("mud-select")
+    const selects = this.selects
     const numPairs = selects.length / 2
 
     this.#selectedGems.length = 0
@@ -154,8 +159,7 @@ export default class Calc {
   }
 
   #toggleOutput(show) {
-    const content = document.querySelector("#content")
-    console.info(content)
+    const content = this.#root.querySelector("#content")
     const output = this.output
     if(!content || !output)
       return
