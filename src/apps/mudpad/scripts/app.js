@@ -1,5 +1,5 @@
 import {init} from "https://esm.sh/modern-monaco"
-import {wrapify} from "https://esm.sh/@gesslar/wrapify"
+import {iwrapify, wrapify} from "https://esm.sh/@gesslar/wrapify"
 import {notify, DisposerClass} from "/js/tk.js"
 import {vsToMonaco} from "./vscode-theme-to-monaco.js"
 
@@ -62,10 +62,10 @@ export default class {
         top: 10,
         bottom: 10,
       },
-      placeholder: "Paste or type in any text, and then click Wrap It Up!",
+      placeholder: "Paste or type in any text, and then click a wrap button.",
       renderFinalNewline: "dimmed",
       renderWhitespace: "boundary",
-      tabFocusMode: true,
+      tabFocusMode: false,
       rulers: [80],
     })
 
@@ -108,17 +108,45 @@ export default class {
 
     this.#editor.setValue(wrapify(this.#editor.getValue(), 80, 0))
     this.#editor.focus()
-    this.#saveSnapshot()
+    this.#saveSnapshot({kind: "plain"})
   }
 
-  #saveSnapshot() {
+  #iwrapIt() {
+    if(!this.#editor || typeof wrapify !== "function")
+      return
+
+    this.#editor.setValue(wrapify(this.#editor.getValue(), 80, 3))
+    this.#editor.focus()
+    this.#saveSnapshot({kind: "indented"})
+  }
+
+  #hwrapIt() {
+    if(!this.#editor || typeof iwrapify !== "function")
+      return
+
+    this.#editor.setValue(iwrapify(this.#editor.getValue(), 80, 5))
+    this.#editor.focus()
+    this.#saveSnapshot({kind: "hanging"})
+  }
+
+  #saveSnapshot(options) {
     const text = this.#editor.getValue()
 
     if(!text.trim())
       return
 
+    const {kind = "plain"} = options ?? {}
+
+    let summary
+    if(kind === "indented")
+      summary = `➜ ${collapse(text, 100)}`
+    else if(kind === "hanging")
+      summary = `⤷ ${collapse(text, 100)}`
+    else
+      summary = `⤭ ${collapse(text, 100)}`
+
     this.#history.save({
-      summary: collapse(text, 100),
+      summary: summary,
       data: {text},
     })
   }
@@ -141,11 +169,15 @@ export default class {
     this.#editor = null
 
     const wrapButton = this.#root.querySelector("#wrap")
+    const iwrapButton = this.#root.querySelector("#iwrap")
+    const hwrapButton = this.#root.querySelector("#hwrap")
 
     this.#history = this.#root.querySelector("mud-history")
 
     this.#disposer.register(
       notify.on("click", this.#wrapIt.bind(this), wrapButton),
+      notify.on("click", this.#hwrapIt.bind(this), hwrapButton),
+      notify.on("click", this.#iwrapIt.bind(this), iwrapButton),
       notify.on("keydown", this.#handleKeyboardShortcuts.bind(this), window),
       notify.on("recall", e => this.#recall(e.detail.data), this.#history),
     )

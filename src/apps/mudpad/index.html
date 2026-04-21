@@ -4,12 +4,23 @@
     <div id="toolbar">
       <div class="kbd-panel" aria-label="Keyboard shortcuts">
         <span class="kbd-row"><kbd>Ctrl</kbd><kbd>E</kbd> Focus editor</span>
-        <span class="kbd-row"><kbd>Esc</kbd> Focus Wrap button</span>
+        <span class="kbd-row"><kbd>Esc</kbd> Focus <strong>Normal Wrap</strong></span>
         <span class="kbd-row"><kbd>F1</kbd> Commands</span>
       </div>
-      <button type="button" class="button" id="wrap" aria-describedby="instructions" aria-controls="container">
-        Wrap It Up!
-      </button>
+      <div>
+        <button type="button" class="button" id="wrap" aria-describedby="instructions" aria-controls="container"
+          title="No indentation.">
+          Plain
+        </button>
+        <button type="button" class="button" id="iwrap" aria-describedby="instructions" aria-controls="container"
+          title="Every paragraph's first line is indented 3 spaces.">
+          Indented
+        </button>
+        <button type="button" class="button" id="hwrap" aria-describedby="instructions" aria-controls="container"
+          title="Every paragraph's line after the first is indented 5 spaces.">
+          Hanging
+        </button>
+      </div>
     </div>
     <div>
       <div id="container" role="textbox" aria-multiline="true" aria-label="Text editor for wrapping"
