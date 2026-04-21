@@ -102,7 +102,17 @@ export default class {
   }
 
   #updateIcOutput(date) {
-    const {monthName, day, year, hour, minute, weekday, stage, season, devotion} = getTime(date)
+    const {
+      monthName,
+      day,
+      year,
+      hour,
+      minute,
+      weekday,
+      stage,
+      season,
+      devotion
+    } = getTime(date)
 
     this.#els.icOutput.value = `${monthName} ${day}, ${year} ${hour}:${pad(minute, 2)}`
     this.#els.icMoreInfo.innerText =
