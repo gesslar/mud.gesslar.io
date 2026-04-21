@@ -1,0 +1,190 @@
+div#content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: clamp(50vw, 80vw, 720px);
+  max-width: 720px;
+  min-width: 340px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border-color);
+  border-radius: var(--panel-border-radius);
+  padding: 1.25rem;
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .section-heading {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .result-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.85rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--panel-border-color);
+    border-radius: 0.5rem;
+  }
+
+  .result-label,
+  .more-info-label {
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-secondary);
+  }
+
+  .more-info-label {
+    margin-top: 0.6rem;
+  }
+
+  .more-info {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--fg);
+    white-space: pre-wrap;
+    padding: 0.55rem 0.75rem;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--panel-border-color);
+    border-radius: 0.4rem;
+    user-select: text;
+  }
+
+  .group {
+    display: flex;
+    align-items: stretch;
+    gap: 0.4rem;
+
+    &.clicked .button {
+      background: linear-gradient(135deg, rgba(255, 166, 0, 0.35), rgba(255, 166, 0, 0.12));
+      border-color: rgba(255, 166, 0, 0.55);
+    }
+  }
+
+  .field {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 2.4rem;
+    padding: 0 0.85rem;
+    box-sizing: border-box;
+    color: var(--fg);
+    background: var(--field-bg);
+    border: 1px solid var(--panel-border-color);
+    border-radius: 0.4rem;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    color-scheme: dark;
+    transition: border-color 160ms ease;
+
+    &:hover {
+      border-color: var(--panel-border-color-strong);
+    }
+
+    &:focus-visible {
+      border-color: var(--accent);
+    }
+
+    &.result {
+      font-family: var(--mono);
+      cursor: default;
+      user-select: text;
+    }
+
+    &::-webkit-calendar-picker-indicator {
+      opacity: 0.55;
+      cursor: pointer;
+      transition: opacity 160ms ease;
+    }
+
+    &::-webkit-calendar-picker-indicator:hover {
+      opacity: 0.9;
+    }
+
+    &::-webkit-datetime-edit,
+    &::-webkit-datetime-edit-fields-wrapper,
+    &::-webkit-datetime-edit-year-field,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-hour-field,
+    &::-webkit-datetime-edit-minute-field,
+    &::-webkit-datetime-edit-second-field,
+    &::-webkit-datetime-edit-ampm-field {
+      color: var(--fg);
+    }
+
+    &::-webkit-datetime-edit-text {
+      color: var(--fg-secondary);
+      padding: 0 0.1rem;
+    }
+
+    &::-webkit-datetime-edit-year-field:focus,
+    &::-webkit-datetime-edit-month-field:focus,
+    &::-webkit-datetime-edit-day-field:focus,
+    &::-webkit-datetime-edit-hour-field:focus,
+    &::-webkit-datetime-edit-minute-field:focus,
+    &::-webkit-datetime-edit-second-field:focus,
+    &::-webkit-datetime-edit-ampm-field:focus {
+      background-color: rgba(255, 166, 0, 0.25);
+      color: var(--fg);
+      outline: none;
+    }
+  }
+
+  .button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.4rem;
+    height: 2.4rem;
+    padding: 0 0.9rem;
+    color: #fefefe;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid var(--panel-border-color);
+    border-radius: 0.4rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(255, 166, 0, 0.25), rgba(255, 166, 0, 0.08));
+      border-color: rgba(255, 166, 0, 0.4);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    .codicon {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+mud-history {
+  width: clamp(50vw, 80vw, 720px);
+  max-width: 720px;
+  min-width: 340px;
+}
+
+@media (max-width: 600px) {
+  div#content,
+  mud-history {
+    width: 92vw;
+  }
+}

@@ -1,0 +1,329 @@
+div#content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: clamp(50vw, 80vw, 1100px);
+  max-width: 1100px;
+  min-width: 340px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border-color);
+  border-radius: var(--panel-border-radius);
+  padding: 1rem;
+  transition: width 200ms ease;
+
+  &.with-output {
+    width: clamp(70vw, 90vw, 1100px);
+
+    .content-columns {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1.25rem;
+    }
+  }
+
+  .content-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: start;
+
+    .primary-column {
+      width: 100%;
+
+      #toolbar {
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        background: rgba(0, 0, 0, 0.65);
+        border: 1px solid var(--panel-border-color);
+        border-radius: 0.5rem;
+        padding: 0.6rem 0.75rem;
+        margin-bottom: 0.75rem;
+
+        > span:last-child {
+          margin-left: auto;
+        }
+      }
+
+      #gemStage {
+        margin: 0.25rem 0;
+
+        &.flex-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+          gap: 1rem;
+          width: 100%;
+          max-width: calc(4 * 200px + 3 * 20px);
+          margin: 0 auto;
+
+          div[id^="bloodjewel-select-"] {
+            .label.gem-name {
+              text-align: center;
+              color: var(--accent);
+              font-weight: 500;
+              font-size: 0.95rem;
+              letter-spacing: 0.02em;
+              margin-bottom: 0.35rem;
+              cursor: default;
+            }
+
+            .select {
+              width: 100%;
+              max-width: 210px;
+              cursor: pointer;
+            }
+          }
+
+          mud-select {
+            margin: 0.15rem 0;
+            max-width: 210px;
+          }
+        }
+      }
+
+    }
+
+    aside#outputStage {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding: 0;
+      min-width: 0;
+      width: fit-content;
+      max-width: 300px;
+      justify-self: end;
+      align-self: stretch;
+      height: 100%;
+
+      &.is-hidden {
+        display: none;
+      }
+
+      .effects-panel {
+        width: auto;
+        min-width: 220px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--panel-border-color);
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+      }
+
+      .effects-title {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-size: 0.75rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      .effects-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+
+      .effect-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid var(--panel-border-color);
+        border-radius: 0.4rem;
+        padding: 0.45rem 0.65rem;
+        column-gap: 0.5rem;
+      }
+
+      .effect-name {
+        color: var(--fg);
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      .effect-value {
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 0.9rem;
+        font-family: var(--mono);
+        min-width: 3rem;
+        text-align: right;
+      }
+
+      .effects-empty {
+        text-align: center;
+        color: var(--fg-secondary);
+        font-style: italic;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+.button {
+  font-family: inherit;
+  color: #fefefe;
+  font-size: 1rem;
+  height: 2.4rem;
+  padding: 0 1.25rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--panel-border-color);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  width: auto;
+  max-width: none;
+  transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(255, 166, 0, 0.25), rgba(255, 166, 0, 0.08));
+    border-color: rgba(255, 166, 0, 0.4);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+#pasteDialog,
+#saveDialog {
+  position: fixed;
+  inset: 10vh auto auto 50%;
+  transform: translate(-50%, -8px) scale(0.995);
+  margin: 0;
+  background: rgba(0, 0, 0, 0.75);
+  color: var(--fg);
+  border: 1px solid var(--panel-border-color);
+  border-radius: 0.75rem;
+  padding: 0;
+  max-width: 520px;
+  width: min(92vw, 520px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  &.is-open {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+  }
+
+  .dialog-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  #pasteBox {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.6rem 0.8rem;
+    max-height: 20ch;
+    min-height: 8rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--panel-border-color);
+    color: var(--fg);
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    outline: none;
+    resize: vertical;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color-strong) transparent;
+    user-select: text;
+    transition: border-color 160ms ease;
+
+    &:focus {
+      border-color: var(--accent);
+    }
+  }
+
+  #saveTitle {
+    box-sizing: border-box;
+    width: 100%;
+    height: 2.6rem;
+    padding: 0 0.85rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--panel-border-color);
+    color: var(--fg);
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    user-select: text;
+    transition: border-color 160ms ease;
+
+    &:focus {
+      border-color: var(--accent);
+    }
+  }
+}
+
+mud-history {
+  width: clamp(50vw, 80vw, 1100px);
+  max-width: 1100px;
+  min-width: 340px;
+  transition: width 200ms ease;
+}
+
+div#content.with-output ~ mud-history {
+  width: clamp(70vw, 90vw, 1100px);
+}
+
+@media (max-width: 960px) {
+  div#content {
+    width: 92vw;
+
+    &.with-output {
+      width: 92vw;
+    }
+
+    .content-columns {
+      grid-template-columns: 1fr;
+    }
+
+    #outputStage {
+      position: static;
+      margin-top: 1rem;
+      max-width: none;
+      width: 100%;
+
+      .effects-list {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+  }
+
+  mud-history,
+  div#content.with-output ~ mud-history {
+    width: 92vw;
+  }
+}

@@ -1,0 +1,38 @@
+nav {
+  padding: 2ch 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 1ch;
+      display: inline;
+
+    }
+
+    a {
+      text-decoration: none;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.6ch;
+      transition:
+        text-decoration-color 160ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        text-underline-offset 160ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+      &[aria-current="page"] {
+        text-decoration-line: underline;
+        text-decoration-style: dotted;
+        text-decoration-color: color-mix(in srgb, var(--accent) 50%, transparent);
+      }
+
+      &:hover {
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-color: var(--accent);
+        text-underline-offset: 0.4ch;
+      }
+    }
+  }
+
+}

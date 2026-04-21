@@ -1,0 +1,19 @@
+<body>
+  <div id="content" aria-labelledby="instructions">
+    <a class="skip-link" href="#container">Skip to editor</a>
+    <div id="toolbar">
+      <div class="kbd-panel" aria-label="Keyboard shortcuts">
+        <p class="kbd-row"><kbd>Ctrl</kbd> + <kbd>E</kbd> — Focus editor</p>
+        <p class="kbd-row"><kbd>Enter</kbd> on “Wrap It Up!” — Wrap text</p>
+      </div>
+      <button type="button" class="btn" id="wrap" aria-describedby="instructions" aria-controls="container">Wrap It
+        Up!</button>
+    </div>
+    <div>
+      <div id="container" role="textbox" aria-multiline="true" aria-label="Text editor for wrapping"
+        aria-describedby="instructions" tabindex="0"></div>
+    </div>
+  </div>
+
+  <mud-history app-id="mudpad"></mud-history>
+</body>

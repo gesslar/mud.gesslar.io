@@ -1,0 +1,61 @@
+<body>
+  <div id="content">
+    <div class="content-columns">
+      <div class="primary-column">
+        <div id="toolbar">
+          <span><button class="button" id="showPasteStage" paste>Paste Belt</button></span>
+          <span><button class="button" id="resetGems" paste>Reset</button></span>
+          <span><button class="button" id="showSaveStage" save>Save</button></span>
+        </div>
+        <div id="gemStage" class="flex-container"></div>
+      </div>
+      <aside id="outputStage" role="status" aria-live="polite" class="is-hidden"></aside>
+    </div>
+  </div>
+
+  <mud-history app-id="bloodjewel-calculator"></mud-history>
+
+  <template id="pasteDialogTemplate">
+    <dialog id="pasteDialog" paste aria-modal="true" role="dialog">
+      <div class="dialog-body">
+        <div id="instructions">
+          <h2>Paste your gems here</h2>
+        </div>
+        <textarea id="pasteBox" spellcheck="false" placeholder="Paste belt gems, one per line"
+          aria-label="Paste belt gems, one per line"></textarea>
+        <div class="dialog-actions">
+          <button class="button" id="pasteButton" paste aria-label="Confirm paste">Confirm Paste</button>
+          <button class="button" id="cancelpaste" paste aria-label="Cancel paste">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+  </template>
+
+  <template id="saveDialogTemplate">
+    <dialog id="saveDialog" save aria-modal="true" role="dialog">
+      <div class="dialog-body">
+        <div id="instructions">
+          <h2>Name your snapshot</h2>
+        </div>
+        <input type="text" id="saveTitle" spellcheck="false" placeholder="A short, memorable title"
+          aria-label="Snapshot title">
+        <div class="dialog-actions">
+          <button class="button" id="saveConfirm" save aria-label="Save snapshot">Save</button>
+          <button class="button" id="cancelSave" save aria-label="Cancel save">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+  </template>
+
+  <template id="gemTemplate">
+    <div>
+      <div class="label gem-name"></div>
+      <mud-select class="select quality-select">
+        <option value="none">none</option>
+      </mud-select>
+      <mud-select class="select type-select">
+        <option value="none">none</option>
+      </mud-select>
+    </div>
+  </template>
+</body>
