@@ -39,12 +39,13 @@ const apps = [
 
 /**
  * Finds a route by matching the needle against route slugs or normalized names.
+ *
+ * @param {string} needle - The app slug to search for
+ * @returns {object | undefined} The app object if found, undefined otherwise
  */
 function findApp(needle) {
   if(!(needle && typeof needle === "string"))
     throw new TypeError(`Needle must be a non-empty string. Got ${needle}`)
-
-  console.info("findApp", needle)
 
   return apps.find(e => `/${e.slug}` === needle)
 }
