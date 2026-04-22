@@ -1,5 +1,5 @@
 {
-  "name": "mud.gesslar.dev",
+  "name": "mud.gesslar.io",
   "version": "1.0.0",
   "description": "My website. Fuck off.",
   "type": "module",
@@ -11,14 +11,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gesslar/mud.gesslar.dev.git"
+    "url": "git+https://github.com/gesslar/mud.gesslar.io.git"
   },
   "author": "gesslar",
-  "license": "Unlicense",
-  "bugs": {
-    "url": "https://github.com/gesslar/mud.gesslar.dev/issues"
-  },
-  "homepage": "https://github.com/gesslar/mud.gesslar.dev#readme",
+  "license": "0BSD",
+  "homepage": "https://mud.gesslar.io",
   "devDependencies": {
     "@gesslar/toolkit": "^5.2.0",
     "@gesslar/uglier": "^2.4.1",
@@ -26,8 +23,5 @@
     "eslint": "^10.2.1",
     "eslint-plugin-jsdoc": "^62.9.0",
     "globals": "^17.5.0"
-  },
-  "dependencies": {
-    "remove": "^0.1.5"
   }
 }
