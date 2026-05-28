@@ -122,27 +122,48 @@ async function fetchGitHubRepositories(username, topics) {
   if(cached)
     return cached
 
-  const topicsQuery = topics.map(t => `topic:${encodeURIComponent(t)}`).join("+")
-  const url = `https://api.github.com/search/repositories?q=user:${encodeURIComponent(username)}+${topicsQuery}`
+  // Scope by topic and filter to the owner client-side. A "user:" qualifier
+  // cannot be used here: with a private GitHub profile, the search API rejects
+  // user-scoped queries (422) even though the repos themselves stay public and
+  // remain discoverable by topic.
+  const results = await Promise.all(
+    topics.map(topic => fetchRepositoriesByTopic(topic))
+  )
+
+  const byName = new Map()
+
+  for(const repo of results.flat()) {
+    if(repo.owner?.login?.toLowerCase() !== username.toLowerCase())
+      continue
+
+    byName.set(repo.name, {
+      name: repo.name,
+      description: repo.description || "No description provided",
+      html_url: repo.html_url,
+    })
+  }
+
+  const repos = Array.from(byName.values())
+
+  writeCache(cacheKey, repos)
+
+  return repos
+}
+
+async function fetchRepositoriesByTopic(topic) {
+  const url = `https://api.github.com/search/repositories?q=topic:${encodeURIComponent(topic)}&per_page=100`
 
   const response = await fetch(url)
 
   if(!response.ok) {
-    console.error(`GitHub API error: ${response.status} ${response.statusText}`)
+    console.error(`GitHub API error for topic ${topic}: ${response.status} ${response.statusText}`)
 
     return []
   }
 
   const data = await response.json()
-  const repos = data.items.map(repo => ({
-    name: repo.name,
-    description: repo.description || "No description provided",
-    html_url: repo.html_url,
-  }))
 
-  writeCache(cacheKey, repos)
-
-  return repos
+  return data.items
 }
 
 function readCache(key, ttlMs) {
