@@ -133,7 +133,7 @@ export default class {
     if(!this.#editor)
       return
 
-    this.#editor.setValue(removeDiacritics(this.#editor.getValue()))
+    this.#editor.setValue(cleanUpText(this.#editor.getValue()))
     this.#editor.focus()
     this.#saveSnapshot({kind: "cleanup"})
   }
@@ -215,6 +215,10 @@ function collapse(text, maxLen) {
     : flat
 }
 
-export function removeDiacritics(text) {
-  return text.normalize("NFD").replace(/\p{M}/gu, "")
+export function cleanUpText(text) {
+  return text
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .replace(/[‘’‚‛]/gu, "'")
+    .replace(/[“”„‟]/gu, "\"")
 }
