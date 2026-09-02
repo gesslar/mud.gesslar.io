@@ -9,26 +9,28 @@
         <span class="kbd-row"><kbd>F1</kbd> Commands</span>
       </div>
       <div class="wrap-actions">
+        <div class="wrap-buttons">
+          <button type="button" class="button" id="wrap" aria-controls="container"
+            title="No indentation.">
+            <span class="glyph">⤭</span><span class="label">Plain</span>
+          </button>
+          <button type="button" class="button" id="iwrap" aria-controls="container"
+            title="Every paragraph's first line is indented 3 spaces.">
+            <span class="glyph">➜</span><span class="label">Indented</span>
+          </button>
+          <button type="button" class="button" id="hwrap" aria-controls="container"
+            title="Every paragraph's line after the first is indented 5 spaces.">
+            <span class="glyph">⤷</span><span class="label">Hanging</span>
+          </button>
+          <button type="button" class="button" id="cleanup" aria-controls="container"
+            title="Remove diacritics and replace typographic quotes with plain quotes.">
+            <span class="glyph">⌫</span><span class="label">Clean up</span>
+          </button>
+        </div>
         <label class="wrap-option" title="Wrap each existing line separately so prompts and form fields stay in place.">
           <input type="checkbox" id="keep-lines" aria-controls="container">
           <span>Keep existing line breaks</span>
         </label>
-        <button type="button" class="button" id="wrap" aria-controls="container"
-          title="No indentation.">
-          <span class="glyph">⤭</span><span class="label">Plain</span>
-        </button>
-        <button type="button" class="button" id="iwrap" aria-controls="container"
-          title="Every paragraph's first line is indented 3 spaces.">
-          <span class="glyph">➜</span><span class="label">Indented</span>
-        </button>
-        <button type="button" class="button" id="hwrap" aria-controls="container"
-          title="Every paragraph's line after the first is indented 5 spaces.">
-          <span class="glyph">⤷</span><span class="label">Hanging</span>
-        </button>
-        <button type="button" class="button" id="cleanup" aria-controls="container"
-          title="Remove diacritics and replace typographic quotes with plain quotes.">
-          <span class="glyph">⌫</span><span class="label">Clean up</span>
-        </button>
       </div>
     </div>
     <div>
