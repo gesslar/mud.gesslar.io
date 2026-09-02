@@ -62,7 +62,7 @@ export default class {
         top: 10,
         bottom: 10,
       },
-      placeholder: "Paste or type in any text, and then click a wrap button.",
+      placeholder: "Paste or type in any text, and then choose an action.",
       renderFinalNewline: "dimmed",
       renderWhitespace: "boundary",
       tabFocusMode: false,
@@ -129,6 +129,15 @@ export default class {
     this.#saveSnapshot({kind: "hanging"})
   }
 
+  #cleanUp() {
+    if(!this.#editor)
+      return
+
+    this.#editor.setValue(removeDiacritics(this.#editor.getValue()))
+    this.#editor.focus()
+    this.#saveSnapshot({kind: "cleanup"})
+  }
+
   #saveSnapshot(options) {
     const text = this.#editor.getValue()
 
@@ -142,6 +151,8 @@ export default class {
       summary = `➜ ${collapse(text, 100)}`
     else if(kind === "hanging")
       summary = `⤷ ${collapse(text, 100)}`
+    else if(kind === "cleanup")
+      summary = `⌫ ${collapse(text, 100)}`
     else
       summary = `⤭ ${collapse(text, 100)}`
 
@@ -171,6 +182,7 @@ export default class {
     const wrapButton = this.#root.querySelector("#wrap")
     const iwrapButton = this.#root.querySelector("#iwrap")
     const hwrapButton = this.#root.querySelector("#hwrap")
+    const cleanupButton = this.#root.querySelector("#cleanup")
 
     this.#history = this.#root.querySelector("mud-history")
 
@@ -178,6 +190,7 @@ export default class {
       notify.on("click", this.#wrapIt.bind(this), wrapButton),
       notify.on("click", this.#hwrapIt.bind(this), hwrapButton),
       notify.on("click", this.#iwrapIt.bind(this), iwrapButton),
+      notify.on("click", this.#cleanUp.bind(this), cleanupButton),
       notify.on("keydown", this.#handleKeyboardShortcuts.bind(this), window),
       notify.on("recall", e => this.#recall(e.detail.data), this.#history),
     )
@@ -200,4 +213,8 @@ function collapse(text, maxLen) {
   return flat.length > maxLen
     ? flat.slice(0, maxLen - 1) + "…"
     : flat
+}
+
+export function removeDiacritics(text) {
+  return text.normalize("NFD").replace(/\p{M}/gu, "")
 }

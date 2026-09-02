@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "eslint src/index.js",
     "lint:fix": "eslint src/index.js --fix",
-    "serve": "npx vite src/",
-    "update": "npx npm-check-updates -u && npm install"
+    "serve": "npx serve src/",
+    "update": "npx -y npm-check-updates -u && npm install"
   },
   "repository": {
     "type": "git",
