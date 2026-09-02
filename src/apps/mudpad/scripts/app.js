@@ -136,7 +136,10 @@ export default class {
     if(!this.#keepLines?.checked)
       return wrap(text)
 
-    return text.split("\n").map(line => line ? wrap(line) : "").join("\n")
+    return text
+      .split("\n")
+      .map(line => line ? wrap(line).replace(/\n+$/u, "") : "")
+      .join("\n")
   }
 
   #cleanUp() {
