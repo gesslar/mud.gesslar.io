@@ -9,6 +9,7 @@ export default class {
   #disposed = false
   #editor
   #history
+  #keepLines
 
   constructor(root) {
     this.#root = root
@@ -106,7 +107,7 @@ export default class {
     if(!this.#editor || typeof wrapify !== "function")
       return
 
-    this.#editor.setValue(wrapify(this.#editor.getValue(), 80, 0))
+    this.#editor.setValue(this.#wrapText(line => wrapify(line, 80, 0)))
     this.#editor.focus()
     this.#saveSnapshot({kind: "plain"})
   }
@@ -115,7 +116,7 @@ export default class {
     if(!this.#editor || typeof wrapify !== "function")
       return
 
-    this.#editor.setValue(wrapify(this.#editor.getValue(), 80, 3))
+    this.#editor.setValue(this.#wrapText(line => wrapify(line, 80, 3)))
     this.#editor.focus()
     this.#saveSnapshot({kind: "indented"})
   }
@@ -124,9 +125,18 @@ export default class {
     if(!this.#editor || typeof iwrapify !== "function")
       return
 
-    this.#editor.setValue(iwrapify(this.#editor.getValue(), 80, 5))
+    this.#editor.setValue(this.#wrapText(line => iwrapify(line, 80, 5)))
     this.#editor.focus()
     this.#saveSnapshot({kind: "hanging"})
+  }
+
+  #wrapText(wrap) {
+    const text = this.#editor.getValue()
+
+    if(!this.#keepLines?.checked)
+      return wrap(text)
+
+    return text.split("\n").map(line => line ? wrap(line) : "").join("\n")
   }
 
   #cleanUp() {
@@ -183,6 +193,7 @@ export default class {
     const iwrapButton = this.#root.querySelector("#iwrap")
     const hwrapButton = this.#root.querySelector("#hwrap")
     const cleanupButton = this.#root.querySelector("#cleanup")
+    this.#keepLines = this.#root.querySelector("#keep-lines")
 
     this.#history = this.#root.querySelector("mud-history")
 
@@ -204,6 +215,7 @@ export default class {
     this.#disposer = null
     this.#editor = null
     this.#history = null
+    this.#keepLines = null
   }
 }
 

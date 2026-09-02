@@ -89,6 +89,30 @@
         border: none;
       }
 
+      .wrap-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+
+      .wrap-option {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-right: 0.35rem;
+        color: var(--fg-secondary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        white-space: nowrap;
+
+        input {
+          accent-color: orange;
+          cursor: pointer;
+        }
+      }
+
       kbd {
         display: inline-flex;
         align-items: center;
