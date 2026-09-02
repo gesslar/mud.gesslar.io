@@ -110,6 +110,12 @@ export default class MudSelect extends HTMLElement {
 
     if(labelledby)
       this.#button.setAttribute("aria-labelledby", labelledby)
+
+    if(label)
+      this.#listbox.setAttribute("aria-label", `${label} options`)
+
+    if(labelledby)
+      this.#listbox.setAttribute("aria-labelledby", labelledby)
   }
 
   #onButtonKey(e) {

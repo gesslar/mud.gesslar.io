@@ -31,6 +31,7 @@ export default class {
       etOutput: content.querySelector("#etdatetimeoutput"),
       icOutput: content.querySelector("#icdatetimeoutput"),
       icMoreInfo: content.querySelector("#icmoreinfo"),
+      status: content.querySelector("#result-status"),
       copyEt: content.querySelector("#copyet"),
       copyIc: content.querySelector("#copyic"),
       history: this.#root.querySelector("mud-history"),
@@ -43,11 +44,11 @@ export default class {
         this.#flash(this.#els.convert)
       }, this.#els.convert),
       notify.on("click", () => {
-        this.#copy(this.#els.etOutput)
+        this.#copy(this.#els.etOutput, "Eastern date and time copied")
         this.#flash(this.#els.copyEt)
       }, this.#els.copyEt),
       notify.on("click", () => {
-        this.#copy(this.#els.icOutput)
+        this.#copy(this.#els.icOutput, "In character date and time copied")
         this.#flash(this.#els.copyIc)
       }, this.#els.copyIc),
       notify.on("recall", e => this.#recall(e.detail.data), this.#els.history),
@@ -93,6 +94,7 @@ export default class {
 
     this.#updateEtOutput(newDate)
     this.#updateIcOutput(newDate)
+    this.#announce(`Converted time. Eastern: ${this.#els.etOutput.value}. In character: ${this.#els.icOutput.value}.`)
   }
 
   #updateEtOutput(date) {
@@ -121,8 +123,14 @@ export default class {
       `Devotion: ${devotion}`
   }
 
-  async #copy(input) {
+  async #copy(input, message) {
     await navigator.clipboard.writeText(input.value)
+    this.#announce(message)
+  }
+
+  #announce(message) {
+    this.#els.status.textContent = ""
+    requestAnimationFrame(() => this.#els.status.textContent = message)
   }
 
   #flash(button) {

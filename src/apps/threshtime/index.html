@@ -3,8 +3,10 @@
     <section class="section">
       <h2 class="section-heading">Select a date and time in your local time</h2>
       <div class="group">
-        <input type="date" id="rldateinput" class="field" aria-label="Date">
-        <input type="time" id="rltimeinput" class="field" aria-label="Time">
+        <label for="rldateinput" class="visually-hidden">Local date</label>
+        <input type="date" id="rldateinput" class="field">
+        <label for="rltimeinput" class="visually-hidden">Local time</label>
+        <input type="time" id="rltimeinput" class="field">
         <button type="button" id="convert" class="button" aria-label="Convert">
           <i class="codicon codicon-play" aria-hidden="true"></i>
         </button>
@@ -15,9 +17,9 @@
       <h2 class="section-heading">Result</h2>
 
       <div class="result-block">
-        <div class="result-label">Eastern Date/Time</div>
+        <label class="result-label" for="etdatetimeoutput">Eastern Date/Time</label>
         <div class="group">
-          <input type="text" id="etdatetimeoutput" class="field result" readonly aria-label="Eastern date and time">
+          <input type="text" id="etdatetimeoutput" class="field result" readonly>
           <button type="button" id="copyet" class="button" aria-label="Copy Eastern date and time">
             <i class="codicon codicon-copy" aria-hidden="true"></i>
           </button>
@@ -25,17 +27,18 @@
       </div>
 
       <div class="result-block">
-        <div class="result-label">In Character Date/Time</div>
+        <label class="result-label" for="icdatetimeoutput">In Character Date/Time</label>
         <div class="group">
-          <input type="text" id="icdatetimeoutput" class="field result" readonly aria-label="In character date and time">
+          <input type="text" id="icdatetimeoutput" class="field result" readonly>
           <button type="button" id="copyic" class="button" aria-label="Copy in character date and time">
             <i class="codicon codicon-copy" aria-hidden="true"></i>
           </button>
         </div>
 
-        <div class="more-info-label">Additional Information</div>
-        <div id="icmoreinfo" class="more-info"></div>
+        <div class="more-info-label" id="icmoreinfo-label">Additional Information</div>
+        <div id="icmoreinfo" class="more-info" role="region" aria-labelledby="icmoreinfo-label"></div>
       </div>
+      <p id="result-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
     </section>
   </div>
 

@@ -2,46 +2,47 @@
   <div id="content">
     <div class="content-columns">
       <div class="primary-column">
-        <div id="toolbar">
-          <span><button class="button" id="showPasteStage" paste>Paste Belt</button></span>
-          <span><button class="button" id="resetGems" paste>Reset</button></span>
-          <span><button class="button" id="showSaveStage" save>Save</button></span>
+        <div id="toolbar" role="group" aria-label="Bloodjewel actions">
+          <span><button type="button" class="button" id="showPasteStage" paste>Paste Belt</button></span>
+          <span><button type="button" class="button" id="resetGems" paste>Reset</button></span>
+          <span><button type="button" class="button" id="showSaveStage" save>Save</button></span>
         </div>
-        <div id="gemStage" class="flex-container"></div>
+        <div id="gemStage" class="flex-container" role="group" aria-label="Bloodjewel configuration"></div>
       </div>
-      <aside id="outputStage" role="status" aria-live="polite" class="is-hidden"></aside>
+      <aside id="outputStage" role="status" aria-live="polite" aria-atomic="true" class="is-hidden"></aside>
     </div>
   </div>
 
   <mud-history app-id="bloodjewel-calculator"></mud-history>
 
   <template id="pasteDialogTemplate">
-    <dialog id="pasteDialog" paste aria-modal="true" role="dialog">
+    <dialog id="pasteDialog" paste aria-labelledby="paste-dialog-title">
       <div class="dialog-body">
         <div id="instructions">
-          <h2>Paste your gems here</h2>
+          <h2 id="paste-dialog-title">Paste your gems here</h2>
         </div>
         <textarea id="pasteBox" spellcheck="false" placeholder="Paste belt gems, one per line"
           aria-label="Paste belt gems, one per line"></textarea>
         <div class="dialog-actions">
-          <button class="button" id="pasteButton" paste aria-label="Confirm paste">Confirm Paste</button>
-          <button class="button" id="cancelpaste" paste aria-label="Cancel paste">Cancel</button>
+          <button type="button" class="button" id="pasteButton" paste>Confirm Paste</button>
+          <button type="button" class="button" id="cancelpaste" paste>Cancel</button>
         </div>
       </div>
     </dialog>
   </template>
 
   <template id="saveDialogTemplate">
-    <dialog id="saveDialog" save aria-modal="true" role="dialog">
+    <dialog id="saveDialog" save aria-labelledby="save-dialog-title">
       <div class="dialog-body">
         <div id="instructions">
-          <h2>Name your snapshot</h2>
+          <h2 id="save-dialog-title">Name your snapshot</h2>
         </div>
         <input type="text" id="saveTitle" spellcheck="false" placeholder="A short, memorable title"
-          aria-label="Snapshot title">
+          aria-label="Snapshot title" aria-describedby="save-title-error" required>
+        <p id="save-title-error" class="visually-hidden" role="alert"></p>
         <div class="dialog-actions">
-          <button class="button" id="saveConfirm" save aria-label="Save snapshot">Save</button>
-          <button class="button" id="cancelSave" save aria-label="Cancel save">Cancel</button>
+          <button type="button" class="button" id="saveConfirm" save>Save</button>
+          <button type="button" class="button" id="cancelSave" save>Cancel</button>
         </div>
       </div>
     </dialog>

@@ -35,6 +35,8 @@ export default class {
 
     for(const repo of allPackages)
       list.appendChild(this.#renderPackage(repo))
+
+    list.setAttribute("aria-busy", "false")
   }
 
   #renderPackage(repo) {
@@ -53,24 +55,22 @@ export default class {
     if(!repo.html_url)
       return li
 
+    const installButton = document.createElement("button")
+    installButton.type = "button"
+    installButton.className = "icon-link"
+    installButton.setAttribute("aria-label", `Copy install command for ${link.textContent}`)
+    installButton.dataset.packageLink = link.href
+
     const installIcon = document.createElement("i")
-    installIcon.className = "codicon codicon-package icon-link"
-    installIcon.setAttribute("role", "button")
-    installIcon.setAttribute("tabindex", "0")
-    installIcon.setAttribute("aria-label", `Copy install command for ${link.textContent}`)
-    installIcon.dataset.packageLink = link.href
+    installIcon.className = "codicon codicon-package"
+    installIcon.setAttribute("aria-hidden", "true")
+    installButton.appendChild(installIcon)
 
     this.#disposer.register(
-      notify.on("click", e => this.#clickInstall(e), installIcon),
-      notify.on("keydown", e => {
-        if(e.key === "Enter" || e.key === " ") {
-          e.preventDefault()
-          this.#clickInstall(e)
-        }
-      }, installIcon),
+      notify.on("click", e => this.#clickInstall(e), installButton),
     )
 
-    li.appendChild(installIcon)
+    li.appendChild(installButton)
 
     const githubLink = document.createElement("a")
     githubLink.href = repo.html_url
@@ -95,10 +95,17 @@ export default class {
 
     await navigator.clipboard.writeText(install)
     element.classList.add("clicked")
+    this.#announce(`Install command for ${element.dataset.packageLink.split("/").at(-1).replace(".mpackage", "")} copied`)
 
     notify.on("transitionend", e => {
       e.currentTarget.classList.remove("clicked")
     }, element, {once: true})
+  }
+
+  #announce(message) {
+    const status = this.#root.querySelector("#copy-status")
+    status.textContent = ""
+    requestAnimationFrame(() => status.textContent = message)
   }
 }
 

@@ -21,6 +21,7 @@ export default class MudHistory extends HTMLElement {
   #list
   #empty
   #clearButton
+  #announcer
 
   connectedCallback() {
     if(this.#list)
@@ -30,6 +31,9 @@ export default class MudHistory extends HTMLElement {
 
     if(!this.#appId)
       throw new Error("<mud-history> requires an app-id attribute")
+
+    this.setAttribute("role", "region")
+    this.setAttribute("aria-label", "Saved history")
 
     this.#load()
     this.#render()
@@ -53,6 +57,7 @@ export default class MudHistory extends HTMLElement {
 
     this.#persist()
     this.#renderEntries()
+    this.#announce("History entry saved")
   }
 
   // Move an entry to the top, refresh its timestamp, and animate the move.
@@ -79,14 +84,16 @@ export default class MudHistory extends HTMLElement {
     this.#entries = []
     this.#persist()
     this.#renderEntries()
+    this.#announce("History cleared")
   }
 
   #render() {
     this.innerHTML = `
       <div class="mud-history__header">
         <h2 class="mud-history__title">History</h2>
-        <button type="button" class="mud-history__clear">Clear</button>
+        <button type="button" class="mud-history__clear" aria-label="Clear all saved history">Clear</button>
       </div>
+      <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
       <div class="mud-history__body">
         <p class="mud-history__empty">No history yet.</p>
         <ul class="mud-history__list" role="list"></ul>
@@ -96,6 +103,7 @@ export default class MudHistory extends HTMLElement {
     this.#list = this.querySelector(":scope > .mud-history__body > .mud-history__list")
     this.#empty = this.querySelector(":scope > .mud-history__body > .mud-history__empty")
     this.#clearButton = this.querySelector(":scope > .mud-history__header > .mud-history__clear")
+    this.#announcer = this.querySelector(":scope > [role='status']")
   }
 
   #bindEvents() {
@@ -124,6 +132,7 @@ export default class MudHistory extends HTMLElement {
 
       if(button.dataset.action === "recall") {
         this.touch(entry.id)
+        this.#announce("History entry recalled")
         this.dispatchEvent(new CustomEvent("recall", {
           detail: {
             id: entry.id,
@@ -137,6 +146,7 @@ export default class MudHistory extends HTMLElement {
         this.#entries = this.#entries.filter(en => en.id !== entry.id)
         this.#persist()
         this.#renderEntries()
+        this.#announce("History entry deleted")
       }
     })
   }
@@ -146,6 +156,7 @@ export default class MudHistory extends HTMLElement {
 
     this.#empty.hidden = !isEmpty
     this.#list.hidden = isEmpty
+    this.#clearButton.disabled = isEmpty
 
     if(isEmpty) {
       this.#list.innerHTML = ""
@@ -163,10 +174,10 @@ export default class MudHistory extends HTMLElement {
       <li class="mud-history__entry" data-id="${escapeAttr(entry.id)}">
         <span class="mud-history__time">${escapeHtml(formatTime(entry.timestamp))}</span>
         <span class="mud-history__summary" title="${escapeAttr(entry.summary)}">${entry.summaryHtml ?? escapeHtml(entry.summary)}</span>
-        <button type="button" class="mud-history__action" data-action="recall" aria-label="Recall this entry">
+        <button type="button" class="mud-history__action" data-action="recall" aria-label="Recall ${escapeAttr(entry.summary)}">
           <i class="codicon codicon-arrow-up" aria-hidden="true"></i>
         </button>
-        <button type="button" class="mud-history__action" data-action="delete" aria-label="Delete this entry">
+        <button type="button" class="mud-history__action" data-action="delete" aria-label="Delete ${escapeAttr(entry.summary)}">
           <i class="codicon codicon-trash" aria-hidden="true"></i>
         </button>
       </li>
@@ -222,6 +233,11 @@ export default class MudHistory extends HTMLElement {
 
   #persist() {
     localStorage.setItem(this.#storageKey, JSON.stringify(this.#entries))
+  }
+
+  #announce(message) {
+    this.#announcer.textContent = ""
+    requestAnimationFrame(() => this.#announcer.textContent = message)
   }
 
   get #storageKey() {

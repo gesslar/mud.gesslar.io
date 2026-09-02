@@ -235,6 +235,7 @@ export default class {
     const fragment = template.content.cloneNode(true)
     const saveDialog = fragment.querySelector("#saveDialog")
     const titleInput = fragment.querySelector("#saveTitle")
+    const titleError = fragment.querySelector("#save-title-error")
     const saveButton = fragment.querySelector("#saveConfirm")
     const cancelSaveButton = fragment.querySelector("#cancelSave")
 
@@ -266,8 +267,13 @@ export default class {
     const submit = () => {
       const title = titleInput.value.trim()
 
-      if(!title)
+      if(!title) {
+        titleInput.setAttribute("aria-invalid", "true")
+        titleError.textContent = "Enter a title before saving"
+        titleInput.focus()
+
         return
+      }
 
       this.#saveSnapshot(title)
       this.#hideSaveStage(saveDialog, titleInput)
@@ -284,6 +290,10 @@ export default class {
           e.preventDefault()
           submit()
         }
+      }, titleInput),
+      notify.on("input", () => {
+        titleInput.removeAttribute("aria-invalid")
+        titleError.textContent = ""
       }, titleInput),
       notify.on("cancel", event => {
         event.preventDefault()

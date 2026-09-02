@@ -59,6 +59,7 @@ async function prepareApp(appDef) {
 
   const section = document.createElement("section")
   section.dataset.app = slug
+  section.setAttribute("aria-label", appDef.name)
   section.hidden = true
   document.querySelector("main").appendChild(section)
 

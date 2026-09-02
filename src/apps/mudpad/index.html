@@ -1,30 +1,31 @@
 <body>
-  <div id="content" aria-labelledby="instructions">
+  <div id="content" aria-label="MUDpad text editor">
     <a class="skip-link" href="#container">Skip to editor</a>
-    <div id="toolbar">
-      <div class="kbd-panel" aria-label="Keyboard shortcuts">
+    <p id="instructions" class="visually-hidden">Enter or paste text, choose wrapping options, then select a wrapping style or clean up the text.</p>
+    <div id="toolbar" role="group" aria-label="Text actions">
+      <div class="kbd-panel" role="group" aria-label="Keyboard shortcuts">
         <span class="kbd-row"><kbd>Ctrl</kbd><kbd>E</kbd> Focus editor</span>
         <span class="kbd-row"><kbd>Esc</kbd> Focus <strong>Plain</strong> wrap</span>
         <span class="kbd-row"><kbd>F1</kbd> Commands</span>
       </div>
       <div class="wrap-actions">
         <label class="wrap-option" title="Wrap each existing line separately so prompts and form fields stay in place.">
-          <input type="checkbox" id="keep-lines">
+          <input type="checkbox" id="keep-lines" aria-controls="container">
           <span>Keep existing line breaks</span>
         </label>
-        <button type="button" class="button" id="wrap" aria-describedby="instructions" aria-controls="container"
+        <button type="button" class="button" id="wrap" aria-controls="container"
           title="No indentation.">
           <span class="glyph">⤭</span><span class="label">Plain</span>
         </button>
-        <button type="button" class="button" id="iwrap" aria-describedby="instructions" aria-controls="container"
+        <button type="button" class="button" id="iwrap" aria-controls="container"
           title="Every paragraph's first line is indented 3 spaces.">
           <span class="glyph">➜</span><span class="label">Indented</span>
         </button>
-        <button type="button" class="button" id="hwrap" aria-describedby="instructions" aria-controls="container"
+        <button type="button" class="button" id="hwrap" aria-controls="container"
           title="Every paragraph's line after the first is indented 5 spaces.">
           <span class="glyph">⤷</span><span class="label">Hanging</span>
         </button>
-        <button type="button" class="button" id="cleanup" aria-describedby="instructions" aria-controls="container"
+        <button type="button" class="button" id="cleanup" aria-controls="container"
           title="Remove diacritics and replace typographic quotes with plain quotes.">
           <span class="glyph">⌫</span><span class="label">Clean up</span>
         </button>
