@@ -45,6 +45,16 @@ div#content {
     margin: 0;
   }
 
+  ol code,
+  p code {
+    padding: 0.1em 0.35em;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.35rem;
+    background: rgba(255, 255, 255, 0.08);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+  }
+
   .codicon.icon {
     display: inline-block;
     vertical-align: text-bottom;
@@ -63,6 +73,7 @@ div#content {
 
   #package-list li {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.6rem;
     padding: 0.65rem 0.85rem;
@@ -77,13 +88,14 @@ div#content {
   }
 
   .package-text {
-    flex: 1 1 auto;
+    flex: 1 1 16rem;
     min-width: 0;
     color: var(--fg);
     user-select: text;
   }
 
   .icon-link {
+    position: relative;
     flex: 0 0 auto;
     cursor: pointer;
     display: inline-flex;
@@ -105,6 +117,154 @@ div#content {
       border-color 160ms ease;
   }
 
+  .mpkg-command {
+    flex: 0 0 auto;
+    display: inline-grid;
+    cursor: pointer;
+    padding: 0.2em 0.5em;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.35rem;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--fg);
+    font: inherit;
+    transition:
+      color 160ms ease,
+      background 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .mpkg-command:hover {
+    color: var(--accent);
+    background: rgba(255, 166, 0, 0.12);
+    border-color: rgba(255, 166, 0, 0.3);
+  }
+
+  .mpkg-command:focus-visible {
+    outline: none;
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Stacked in one grid cell so the button keeps its width when they swap. */
+  .mpkg-command .copy-label,
+  .mpkg-command .copied-label,
+  .copy-swap .copy-label,
+  .copy-swap .copied-label {
+    grid-area: 1 / 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .mpkg-command .copy-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+  }
+
+  .copied-label {
+    visibility: hidden;
+    color: var(--accent);
+    font-size: 0.9em;
+  }
+
+  .copied .copy-label {
+    visibility: hidden;
+  }
+
+  .copied .copied-label {
+    visibility: visible;
+  }
+
+  /* An icon button is too small to hold the label, so it sits beside it. */
+  .icon-link .copied-label {
+    position: absolute;
+    right: calc(100% + 0.4rem);
+    z-index: 1;
+    padding: 0.15em 0.5em;
+    border: 1px solid rgba(255, 166, 0, 0.3);
+    border-radius: 0.35rem;
+    background: #1a1408;
+    white-space: nowrap;
+  }
+
+  .icon-link.copied .codicon {
+    animation: copy-nudge 300ms cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  .manual-copy {
+    flex: 1 1 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin: 0.25rem 0 1rem;
+    padding: 0.65rem 0.85rem;
+    background: rgba(255, 166, 0, 0.08);
+    border: 1px solid rgba(255, 166, 0, 0.3);
+    border-radius: 0.4rem;
+  }
+
+  #package-list .manual-copy {
+    margin-bottom: 0;
+  }
+
+  .manual-copy p {
+    flex: 1 1 100%;
+    margin: 0;
+  }
+
+  .manual-copy input {
+    flex: 1 1 12rem;
+    min-width: 0;
+    padding: 0.3em 0.5em;
+    border: 1px solid var(--panel-border-color-strong);
+    border-radius: 0.35rem;
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--fg);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+  }
+
+  .manual-copy input::selection {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .manual-copy input:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .mpkg-note {
+    margin: 1rem 0;
+    padding: 0.65rem 0.85rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.4rem;
+  }
+
+  .copy-link {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: var(--link);
+    text-decoration: underline;
+  }
+
+  .copy-swap {
+    display: inline-grid;
+  }
+
+  .copy-swap.copied {
+    text-decoration: none;
+  }
+
+  .copy-link:hover,
+  .copy-link:focus-visible {
+    color: var(--accent);
+  }
+
   .icon-link:hover {
     color: var(--accent);
     background: rgba(255, 166, 0, 0.12);
@@ -117,9 +277,11 @@ div#content {
     border-color: var(--accent);
   }
 
-  .icon-link.clicked {
+}
+}
+
+@keyframes copy-nudge {
+  50% {
     transform: rotate(45deg);
   }
-
-}
 }
